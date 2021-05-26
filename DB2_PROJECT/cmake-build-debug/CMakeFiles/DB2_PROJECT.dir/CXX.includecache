@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/extendibleHash/extendibleHash.h
+../libs.h
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/libs.h
+
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/libs.h
+iostream
+-
+random
+-
+cmath
+-
+fstream
+-
+string
+-
+cstdio
+-
+cstdlib
+-
+
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/main.cpp
+test/test.cpp
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/test/test.cpp
+
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/sequentialFile/sequentialFile.h
+../libs.h
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/libs.h
+
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/test/test.cpp
+test.h
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/test/test.h
+
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/test/test.h
+../extendibleHash/extendibleHash.h
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/extendibleHash/extendibleHash.h
+../sequentialFile/sequentialFile.h
+C:/Users/Jorge/CLionProjects/DB/DB2_PROJECT/src/sequentialFile/sequentialFile.h
+
