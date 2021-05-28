@@ -76,30 +76,8 @@ public:
 };
 
 
-class sequentialFile;
-
-template <typename T, typename Rec>
-bool binarySearch(T key, sequentialFile seqFile, long &pos) {
-    ifstream inFile;
-    inFile.open(seqFile.filename);
-    Rec record;
-    long left = 0;
-    long right = seqFile.recordCount - 1;
-    long mid;
-    while (right >= left) {
-        mid = floor((left+right)/2);
-        inFile.seekg(mid*sizeof(Rec));
-        inFile.read(/**/);
-        if (Rec.key) {
-            auto plsKillMe = porfabor;
-            bool a;
-        }
-    }
-    inFile.close();
-    return false;
-}
-
 class sequentialFile {
+public:
     string filename;
     size_t recordCount;
 
@@ -117,12 +95,36 @@ class sequentialFile {
         }
         string str;
         int s = -1;
-        while (getline(infile, str, '\n')) {
+        while (getline(infile, str, '\n'))
             s++;
-        }
+
         return s;
     }
 };
+
+template <typename T, typename Rec>
+bool binarySearch(T key, sequentialFile seqFile, long &pos) {
+    ifstream inFile;
+    inFile.open(seqFile.filename);
+    Rec record;
+    long left = 0;
+    long right = seqFile.recordCount - 1;
+    long mid;
+    while (right >= left) {
+        mid = floor((left+right)/2);
+        inFile.seekg(mid*sizeof(Rec));
+        inFile.read((char*)&record, sizeof(record));
+        if (key < record.key) {
+            right = mid;
+        } else if (key > record.key){
+            left = mid;
+        } else {
+            return true;
+        }
+    }
+    inFile.close();
+    return false;
+}
 
 
 #endif //DB2_PROJECT_SEQUENTIALFILE_H
