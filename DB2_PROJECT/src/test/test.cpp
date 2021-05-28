@@ -16,7 +16,8 @@ void testHash() {
         exit(1);
     }
 
-    extendibleHash hash;
+    staticHash hash;
+    
     bool first = true;
     getline(gamefile, str, '\n');
     while (getline(gamefile, str, '\n')) {
@@ -28,7 +29,7 @@ void testHash() {
     cout << endl;
     hash.printHash();
     /*
-    extendibleHash hash;
+    staticHash hash;
     string s = "TZJHLljE,FALSE,1.50421E+12,1.50421E+12,13,outoftime,white,15+2,bourgris,1500,a-00,1191,d4 d5 c4 c6 cxd5 e6 dxe6 fxe6 Nf3 Bb4+ Nc3 Ba5 Bf4,D10,Slav Defense: Exchange Variation,5";
     game* g = new game();
     g->serialize(s);

@@ -5,7 +5,7 @@
 #ifndef DB2_PROJECT_TEST_H
 #define DB2_PROJECT_TEST_H
 
-#include "../extendibleHash/extendibleHash.h"
+#include "../staticHash/staticHash.h"
 #include "../sequentialFile/sequentialFile.h"
 
 //void testHash();
