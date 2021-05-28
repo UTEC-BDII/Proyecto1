@@ -1,0 +1,3 @@
+C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/cmake-build-debug/CMakeFiles/DB2_INTENTO2.dir
+C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
