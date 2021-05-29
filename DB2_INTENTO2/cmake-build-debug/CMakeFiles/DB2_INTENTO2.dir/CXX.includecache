@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/libs.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/libs.h
 iostream
 -
 random
@@ -21,26 +21,28 @@ cstdio
 -
 cstdlib
 -
+regex
+-
 
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/main.cpp
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/main.cpp
 test/test.cpp
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/test/test.cpp
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/test/test.cpp
 
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/sequentialFile/sequentialFile.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/sequentialFile/sequentialFile.h
 ../libs.h
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/libs.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/libs.h
 
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/staticHash/staticHash.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/staticHash/staticHash.h
 ../libs.h
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/libs.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/libs.h
 
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/test/test.cpp
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/test/test.cpp
 test.h
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/test/test.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/test/test.h
 
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/test/test.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/test/test.h
 ../staticHash/staticHash.h
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/staticHash/staticHash.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/staticHash/staticHash.h
 ../sequentialFile/sequentialFile.h
-C:/Users/Jorge/CLionProjects/DB/DB2_INTENTO2/src/sequentialFile/sequentialFile.h
+C:/Users/Jorge/CLionProjects/DB/Proyecto1/DB2_INTENTO2/src/sequentialFile/sequentialFile.h
 

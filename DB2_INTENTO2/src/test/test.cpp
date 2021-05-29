@@ -41,5 +41,14 @@ void testHash() {
 }
 
 void testSequential() {
+    sequentialFile<Basket> sf("basket_analysis.csv");
+    // cout << sf.count(); // funciona
+    long pos;
+    binarySearch<int, Basket>(5, sf, pos);
+    ///cout << "POS: " << pos << endl;
+    auto v = rangeSearch(5, 10, sf);
+    for (auto x : v) {
+        cout << x.key << " - ";
+    }
 
 }

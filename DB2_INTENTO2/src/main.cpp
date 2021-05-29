@@ -2,7 +2,7 @@
 
 int main() {
 
-    testHash();
+    // testHash();
 
     testSequential();
 

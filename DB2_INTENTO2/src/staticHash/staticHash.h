@@ -2,8 +2,8 @@
 // Created by Jorge on 21/05/2021.
 //
 
-#ifndef DB2_PROJECT_EXTENDIBLEHASH_H
-#define DB2_PROJECT_EXTENDIBLEHASH_H
+#ifndef DB2_PROJECT_STATICHASH_H
+#define DB2_PROJECT_STATICHASH_H
 
 #include "../libs.h"
 
@@ -20,9 +20,9 @@ struct Element{
 };
 
 struct Bucket{
-    Bucket* next;           // next
+    Bucket* next;                           // next
     Element* indexes[MAX_SIZE_BUCKET];      // indexes
-    int size;               // actual size of the bucket
+    int size;                               // actual size of the bucket
 
     explicit Bucket() : next(nullptr), size(0) {
         for (int i=0; i<MAX_SIZE_BUCKET; i++) {
@@ -38,12 +38,12 @@ struct Bucket{
 };
 
 
-class extendibleHash {
+class staticHash {
 private:
     Bucket* buckets[MAX_SIZE_HASH];       // Array de punteros a buckets
 
 public:
-    extendibleHash() {
+    staticHash() {
         for (int i=0; i<MAX_SIZE_HASH; i++) {
             buckets[i] = new Bucket();
         }
@@ -266,4 +266,4 @@ public:
 };
 
 
-#endif //DB2_PROJECT_EXTENDIBLEHASH_H
+#endif //DB2_PROJECT_STATICHASH_H
