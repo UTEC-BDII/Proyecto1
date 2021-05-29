@@ -48,8 +48,8 @@ void testSequential() {
     binarySearch<long, Basket>(5, &sf, pos);
     ///cout << "POS: " << pos << endl;
     
-    long start = 993;
-    long end = 997;
+    long start = -5;
+    long end = 7;
     auto v = sf.rangeSearch(start, end);
     for (auto x : v) {
         cout << x.key << " - " << x.Apple << " - " << x.Bread << " - " << x.next << "\n";

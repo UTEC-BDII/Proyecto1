@@ -19,7 +19,7 @@ void sequentialFile<T, Rec>::createBinaryFile() {
         cerr << "ERROR" << endl;
         exit(1);
     }
-    size_t s = -1;
+    size_t s = 0;
 
     string str;
     datfile = regex_replace(filename, regex("csv"), "dat");
@@ -88,13 +88,18 @@ vector<Rec> sequentialFile<T, Rec>::rangeSearch(T beginkey, T endkey) {
     Rec record;
     long beginpos;
     binarySearch(beginkey, this, beginpos);
-    inFile.seekg(beginpos*sizeof(Rec));
+    if (beginpos < 0) {
+        beginpos = 0;
+        inFile.seekg(0);
+    } else {
+        inFile.seekg(beginpos*sizeof(Rec));
+    }
     inFile.read((char*)&record, sizeof(record));
     v.push_back(record);
 
     T currentkey = record.key;
     while(currentkey < endkey && record.next != -1) {
-        inFile.seekg(++beginpos * sizeof(Rec));
+        inFile.seekg(record.next);
         inFile.read((char *) &record, sizeof(record));
         v.push_back(record);
         currentkey = record.key;
