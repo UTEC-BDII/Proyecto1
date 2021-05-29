@@ -7,7 +7,7 @@
 void testHash() {
 
     ifstream gamefile;
-    string filename = "games.csv";
+    string filename = "basket_analysis.csv";
     string str;
 
     gamefile.open(filename.c_str());
@@ -16,26 +16,27 @@ void testHash() {
         exit(1);
     }
 
-    staticHash hash;
+    staticHash<Basket> hash(filename);
     
     bool first = true;
     getline(gamefile, str, '\n');
     while (getline(gamefile, str, '\n')) {
         // cout << str;
-        game* g = new game();
-        g->serialize(str);
-        hash.addToHash(g, g->getKey());
+        Basket* g = new Basket();
+        g->serialization(str);
+        // hash.addToHash(g, g->getKey());
     }
     cout << endl;
-    hash.printHash();
+    //hash.printHash();
     /*
     staticHash hash;
     string s = "TZJHLljE,FALSE,1.50421E+12,1.50421E+12,13,outoftime,white,15+2,bourgris,1500,a-00,1191,d4 d5 c4 c6 cxd5 e6 dxe6 fxe6 Nf3 Bb4+ Nc3 Ba5 Bf4,D10,Slav Defense: Exchange Variation,5";
     game* g = new game();
     g->serialize(s);
     hash.addToHash(g, "TZJHLljE");
-     */
+
     // game* n = hash->find("hola");
+    */
 
     gamefile.close();
 }
