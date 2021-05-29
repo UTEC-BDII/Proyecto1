@@ -10,7 +10,7 @@
 #define MAX_SIZE_BUCKET 10
 #define MAX_SIZE_HASH 100
 
-class Record {
+class RecordHash {
 protected:
 
     virtual void read() = 0;
@@ -18,7 +18,7 @@ protected:
     virtual void serialization(string object) = 0;
 };
 
-class Basket : public Record {
+class BasketHash : public RecordHash {
 public:
     long key;    //id
     bool Apple;

@@ -10,7 +10,7 @@ class Menu
     sequentialFile<long, Basket> seq1("basket_analysis.csv", 5);
     sequentialFile<long, WorldPopulation> seq2("WorldPopulation.csv", 5);
   */
-    staticHash hash;
+    staticHash<Rec> hash;
   public:
     Menu();
     void limpiar();

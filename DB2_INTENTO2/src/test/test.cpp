@@ -16,13 +16,13 @@ void testHash() {
         exit(1);
     }
 
-    staticHash<Basket> hash(filename);
+    staticHash<BasketHash> hash(filename);
     
     bool first = true;
     getline(gamefile, str, '\n');
     while (getline(gamefile, str, '\n')) {
         // cout << str;
-        Basket* g = new Basket();
+        BasketHash* g = new BasketHash();
         g->serialization(str);
         // hash.addToHash(g, g->getKey());
     }
