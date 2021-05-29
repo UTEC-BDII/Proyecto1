@@ -41,14 +41,19 @@ void testHash() {
 }
 
 void testSequential() {
-    sequentialFile<Basket> sf("basket_analysis.csv");
+    sequentialFile<long, Basket> sf("basket_analysis.csv", 5);
     // cout << sf.count(); // funciona
     long pos;
-    binarySearch<int, Basket>(5, sf, pos);
+    binarySearch<long, Basket>(5, &sf, pos);
     ///cout << "POS: " << pos << endl;
-    auto v = rangeSearch(5, 10, sf);
+    
+    long start = 993;
+    long end = 997;
+    auto v = sf.rangeSearch(start, end);
     for (auto x : v) {
-        cout << x.key << " - ";
+        cout << x.key << " - " << x.Apple << " - " << x.Bread << " - " << x.next << "\n";
     }
 
+    Basket basket;
+    sf.add(basket);
 }

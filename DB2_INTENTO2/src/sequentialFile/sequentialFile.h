@@ -1,6 +1,3 @@
-//
-// Created by Jorge on 21/05/2021.
-//
 
 #ifndef DB2_PROJECT_SEQUENTIALFILE_H
 #define DB2_PROJECT_SEQUENTIALFILE_H
@@ -34,7 +31,10 @@ public:
     bool Unicorn;
     bool Yogurt;
     bool chocolate;
+    long next;
 public:
+    Basket(){}
+
     void read() override{
 
     }
@@ -48,7 +48,6 @@ public:
         string att;
         for (char letter : object) {
             if (letter != ',') {
-                //att += letter;
                 att.push_back(letter);
             } else {
                 switch (i) {
@@ -124,7 +123,10 @@ public:
     int Density;
     long Urban;
     int UrbanPerc;
+    long next;
 public:
+    WorldPopulation(){}
+
     void read() override{
         /*
         ifstream inFile;
@@ -140,129 +142,48 @@ public:
     void write() override{
         
     }
-    
-    WorldPopulation()
-    {
-        
-    }
 
     void serialization(string object) override {
 
     }
 };
 
-template<typename Record>
+template<typename T, typename Rec>
 class sequentialFile {
-public:
+private:
     string filename;
     size_t recordCount;
     string datfile;
+    int auxFactor;
 
-    sequentialFile(string filename) {
-        this->filename = filename;
-        recordCount = count();
-    }
+public:
+    sequentialFile(string filename, int auxFactor);
+    void createBinaryFile();
+    size_t countRecords();
+    void add(Rec record); //TODO
+    void remove(T key); //TODO
+    Rec search(T key); //TODO
+    vector<Rec> rangeSearch(T beginkey, T endkey);
+    void reconstruct();
 
-    size_t count() 
-    {
-        ifstream infile;
-        ofstream outfile;
-        
-        infile.open(filename.c_str());
-        if (!infile) {
-            cerr << "ERROR" << endl;
-            exit(1);
-        }
-        size_t s = -1;
-
-        string str;
-        datfile = regex_replace(filename, regex("csv"), "dat");
-
-        outfile.open(datfile, ios::out | ios::binary);
-
-        if(!outfile) {
-            cerr << "ERROR" << endl;
-        }
-
-        getline(infile, str, '\n');
-        while (getline(infile, str, '\n')) {
-            // cout << "str:" << str;
-            Record r;
-            r.serialization(str);
-            outfile.write((char*) &r, sizeof(r));
-            s++; 
-        }
-        outfile.close();
-        infile.close();
-        return s;
-    }
+    template <typename T1, typename Rec1>
+    friend bool binarySearch(T1 key, sequentialFile<T1, Rec1>* seqFile, long &pos);
 };
 
 template <typename T, typename Rec>
-bool binarySearch(T key, sequentialFile<Rec> seqFile, long &pos) {
-    ifstream inFile;
-    inFile.open(seqFile.datfile);
-    Rec record;
-    long left = 0;
-    long right = seqFile.recordCount - 1;
-    long mid;
-    cout << "right:" << right << " - " << "left:" << left << "mid:" << mid << "\n";
-    cout << endl;
-    while (right >= left) {
-        mid = floor((left+right)/2);
-        inFile.seekg(mid*sizeof(Rec));
-        inFile.read((char*)&record, sizeof(record));
-        if (key < record.key) {
-            right = mid;
-        } else if (key > record.key){
-            left = mid;
-        } else {
-            cout << "mid: " << mid << endl;
-            pos = mid;
-            return true;
-        }
-        cout << "right:" << right << " - " << "left:" << left << "mid:" << mid << "key:" << record.key <<"\n";
-        if (left == right)
-            break;
-    }
-    inFile.close();
-    pos = -1;
-    return false;
-}
+bool binarySearch(T key, sequentialFile<T, Rec>* seqFile, long &pos);
 
-template <typename T, typename Rec>
-vector<Rec> rangeSearch(T beginkey, T endkey, sequentialFile<Rec> seqFile) {
-    vector<Rec> v;
+/* template <typename T, typename Rec>
+Rec rangeEqual(T key, sequentialFile<T, Rec> seqFile) {
+    Rec record;
+    long pos;
+    binarySearch(key, seqFile, pos);
     ifstream inFile;
     inFile.open(seqFile.datfile);
-    Rec record;
-    long beginpos;
-    binarySearch(beginkey, seqFile, beginpos);
-    inFile.seekg(beginpos*sizeof(Rec));
+    inFile.seekg(pos*sizeof(Rec));
     inFile.read((char*)&record, sizeof(record));
-    v.push_back(record);
-
-    T currentkey = record.key;
-    while(currentkey != endkey) {
-        inFile.seekg(++beginpos * sizeof(Rec));
-        inFile.read((char *) &record, sizeof(record));
-        v.push_back(record);
-        currentkey = record.key;
-    }
     inFile.close();
-
-    return v;
-}
-
-template <typename T, typename Rec>
-bool remove(T key, sequentialFile<Rec> seqFile) {
-    Rec toRemove;
-    long i;
-    binarySearch(key, seqFile, i);
-    ifstream inFile;
-    inFile.seekg(i*sizeof(Rec));
-    
-    return true;
-}
+    return record;
+} */
 
 #endif //DB2_PROJECT_SEQUENTIALFILE_H

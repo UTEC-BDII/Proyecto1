@@ -7,6 +7,7 @@
 
 #include "../staticHash/staticHash.h"
 #include "../sequentialFile/sequentialFile.h"
+#include "../sequentialFile/sequentialFile.cpp"
 
 //void testHash();
 

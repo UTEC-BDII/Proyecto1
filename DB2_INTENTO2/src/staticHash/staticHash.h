@@ -10,80 +10,269 @@
 #define MAX_SIZE_BUCKET 10
 #define MAX_SIZE_HASH 100
 
-class game;
+class Record {
+protected:
 
-struct Element{
-    long index;
-    string key;
-    Element(){}
-    Element(long _index_, string _key_){}
+    virtual void read() = 0;
+    virtual void write() = 0;
+    virtual void serialization(string object) = 0;
 };
 
-struct Bucket{
-    Bucket* next;                           // next
-    Element* indexes[MAX_SIZE_BUCKET];      // indexes
-    int size;                               // actual size of the bucket
+class Basket : public Record {
+public:
+    long key;    //id
+    bool Apple;
+    bool Bread;
+    bool Butter;
+    bool Cheese;
+    bool Corn;
+    bool Dill;
+    bool Eggs;
+    bool Ice_cream;
+    bool Kidney_Beans;
+    bool Milk;
+    bool Nutmeg;
+    bool Onion;
+    bool Sugar;
+    bool Unicorn;
+    bool Yogurt;
+    bool chocolate;
 
-    explicit Bucket() : next(nullptr), size(0) {
-        for (int i=0; i<MAX_SIZE_BUCKET; i++) {
-            indexes[i] = new Element();
-        }
+public:
+    void read() override{
+
     }
 
-    void add(long newIndex, string newKey) {
+    void write() override{
+
+    }
+
+    void serialization(string object) override {
+        int i=0;
+        string att;
+        for (char letter : object) {
+            if (letter != ',') {
+                att.push_back(letter);
+            } else {
+                bool value = att == "True";
+                switch (i) {
+                    case 0:
+                        key = stol(att);
+                        break;
+                    case 1:
+                        Apple = value;
+                        break;
+                    case 2:
+                        Bread = value;
+                        break;
+                    case 3:
+                        Butter = value;
+                        break;
+                    case 4:
+                        Cheese = value;
+                        break;
+                    case 5:
+                        Corn = value;
+                        break;
+                    case 6:
+                        Dill = value;
+                        break;
+                    case 7:
+                        Eggs = value;
+                        break;
+                    case 8:
+                        Ice_cream = value;
+                        break;
+                    case 9:
+                        Kidney_Beans = value;
+                        break;
+                    case 10:
+                        Milk = value;
+                        break;
+                    case 11:
+                        Nutmeg = value;
+                        break;
+                    case 12:
+                        Onion = value;
+                        break;
+                    case 13:
+                        Sugar = value;
+                        break;
+                    case 14:
+                        Unicorn = value;
+                        break;
+                    case 15:
+                        Yogurt = value;
+                        break;
+                    default:
+                        cerr << "Error in serializing\n";
+                        break;
+                }
+                i++;
+                att.clear();
+            }
+        }
+        // case 16:
+        // after "for" ends
+        // cout << att << ", ";
+        chocolate = att == "True";
+    }
+};
+
+
+struct indexElement{
+    long index;     // en el datafile no en el index
+    long key;
+    indexElement(){}
+    indexElement(long _index_, long _key_) : index(_index_), key(_key_){}
+};
+
+struct indexBucket{
+    long next;
+    indexElement* indexes[MAX_SIZE_BUCKET];      // indexes
+    int size;                               // actual size of the bucket
+
+    explicit indexBucket() : next(-1), size(0) {}
+
+    void add(long newIndex, long newKey) {
+        indexes[size] = new indexElement();
         indexes[size]->index = newIndex;
         indexes[size]->key = newKey;
         size++;
     }
 };
+/*
+struct Bucket{
+    long next2;                             // ubicacion del sgt bucket
+    Bucket* next;                           // next
+    indexElement* indexes[MAX_SIZE_BUCKET]; // indexes
+    int size;                               // actual size of the bucket
 
-
-class staticHash {
-private:
-    Bucket* buckets[MAX_SIZE_HASH];       // Array de punteros a buckets
-
-public:
-    staticHash() {
-        for (int i=0; i<MAX_SIZE_HASH; i++) {
-            buckets[i] = new Bucket();
+    explicit Bucket() : next(nullptr), size(0) {
+        for (int i=0; i<MAX_SIZE_BUCKET; i++) {
+            indexes[i] = new indexElement();
         }
     }
 
-    int hashFunction(const string& id) {
+    void add(long newIndex, long newKey) {
+        indexes[size]->index = newIndex;
+        indexes[size]->key = newKey;
+        size++;
+    }
+};
+ */
+
+template<typename Record>
+class staticHash {
+private:
+    string filename;
+    string indexfilename;
+    string datfile;
+    long recordCount;                        //
+    long indexCount;
+    // Bucket* buckets[MAX_SIZE_HASH];      // Array de punteros a buckets
+
+public:
+    staticHash(string name) : filename(name), recordCount(0), indexCount(0) {
+        ifstream infile;
+        ofstream outfile, indexoutfile;
+
+        infile.open(filename.c_str());
+
+        datfile = regex_replace(filename, regex("csv"), "dat");
+        outfile.open(datfile, ios::out | ios::binary);
+
+        indexfilename = "index.dat";
+        indexoutfile.open(indexfilename, ios::out | ios::binary);
+
+        if(!infile || !outfile || !indexoutfile) {
+            cerr << "ERROR" << endl;
+            exit(1);
+        }
+
+        indexBucket bucket{};
+        for (int i=0; i<MAX_SIZE_HASH; i++)
+            indexoutfile.write((char*)&bucket, sizeof(indexBucket));
+
+        indexCount = MAX_SIZE_BUCKET;
+
+        outfile.close();
+        indexoutfile.close();
+
+        size_t s = 0;
+        string str;
+
+        getline(infile, str, '\n');
+        while (getline(infile, str, '\n')) {
+            cout << s << "-";
+            Record r;
+            r.serialization(str);
+            ++s;
+            addToHash(r, r.key);
+        }
+        infile.close();
+        recordCount = s;
+        cout << "recordCount: " << recordCount << endl;
+    }
+
+    int hashFunction(const long& id) {
+        /*
         int value = 0;
         int exp = 1;
         for (auto letter : id) {
             value += letter * exp;
             exp *= 10;
         }
-        return value % MAX_SIZE_HASH;
+         */
+        return id % MAX_SIZE_HASH;
     }
 
-    void addToHash(game* strct, const string& key) {
-        long address;
+    void addToHash(Record record, long key) {
+        long address = (++recordCount)*sizeof(record);
 
-        /*
-         * Add to file & save the position in the hash table in "address"
-         */
+        ofstream outfile;
+        outfile.open(datfile);
+        outfile.write((char*)&record, sizeof(Record));
+        outfile.close();
 
-        address = 0;
         int hashKey = hashFunction(key);
-        if ( buckets[hashKey]->size < MAX_SIZE_BUCKET ) {
-            buckets[hashKey]->add(address, key);
+        indexBucket bucket;
+        ifstream infile;
+        infile.open(indexfilename);
+        infile.seekg(hashKey*sizeof(indexBucket));
+        infile.read((char*)&bucket, sizeof(indexBucket));
+        infile.close();
+
+        if ( bucket.size < MAX_SIZE_BUCKET ) {
+            bucket.add(address, key);
+
+            outfile.open(indexfilename);
+            outfile.seekp(hashKey*sizeof(indexBucket));
+            outfile.write((char*) &bucket, sizeof(indexBucket));
+            outfile.close();
         } else {
             // Create a new bucket using LIFO
-            auto* newBucket = new Bucket();
-            newBucket->next = buckets[hashKey];
-            buckets[hashKey] = newBucket;
+            Record newBucket, oldBucket;
 
-            // Adding the position in the hash table
-            buckets[hashKey]->add(address, key);
+            // Save the oldBucket to add it into the end of the file
+            infile.open(indexfilename);
+            infile.seekg(hashKey*sizeof(indexBucket));
+            infile.read((char*)&oldBucket, sizeof(indexBucket));
+            infile.close();
+
+            outfile.open(indexfilename);
+            outfile.seekp(hashKey*sizeof(indexBucket));
+            outfile.write((char*)&newBucket, sizeof(indexBucket));
+            outfile.seekp((++indexCount)*sizeof(indexBucket));
+            outfile.write((char*)&oldBucket, sizeof(indexBucket));
+            outfile.close();
         }
-    }
 
-    game* find(const string& key) {
+    }
+    /*
+    bool find(const string& key, Record r) {
         // Search in array
-        game* strct;
+        Record record;
         int hashKey = hashFunction(key);
         Bucket* it = buckets[hashKey];
 
@@ -100,28 +289,39 @@ public:
             }
             it = it->next;
         }
-        return nullptr;
+        return true;
     }
+     */
+
 
     void printHash() {
+        ifstream infile;
+        infile.open(indexfilename);
         for (auto i=0; i<MAX_SIZE_HASH; i++) {
             cout << i << ": " << endl;
-            auto curr = buckets[i];
-            while (curr != nullptr) {
-                cout << "\tsize:" << curr->size << " {:} ";
-                for (int j=0; j<curr->size; j++) {
-                    cout << "\t" << curr->indexes[j]->key << " -> ";
+            indexBucket curr;
+            infile.seekg(i*sizeof(indexCount));
+            infile.read((char*)&curr, sizeof(indexBucket));
+            while (curr.next != -1) {
+                cout << "\tsize:" << curr.size << " {:} ";
+                for (int j=0; j<curr.size; j++) {
+                    cout << "\t" << curr.indexes[j]->key << " -> ";
                 }
                 cout << endl;
-                curr = curr->next;
+                infile.seekg(curr.next*sizeof(indexCount));
+                infile.read((char*)&curr, sizeof(indexBucket));
             }
         }
     }
 
+
 };
 
-// string::size_type sz;
 
+
+
+// string::size_type sz;
+/*
 class game{
 private:
     string id;
@@ -171,12 +371,6 @@ private:
     }
 public:
     explicit game() {}
-
-    /*
-    game(string object) {
-        serialize(object);
-    }
-     */
 
     void serialize(string object) {
         int i=0;
@@ -264,6 +458,6 @@ public:
         return id;
     }
 };
-
+*/
 
 #endif //DB2_PROJECT_STATICHASH_H
