@@ -1,23 +1,13 @@
 #include "test/test.cpp"
 #include "test/menu.h"
 
-/*
-void SecondMenu()
-{
-    aca van mas avances
-    mas avances
-    mas avances
-    mas avances
-    
-}
-*/
-
 int main() {
 /*
     Menu M;
     M.showMenu();
     int op;
-    int val;
+    int dat;
+    int tec;
     do
     {
         cin >> op;
@@ -27,24 +17,26 @@ int main() {
             cout << "se acabo..." << endl;
             break;
         case 1:
-            val = op;
-            showSpecificMenu(op);
-            break;
         case 2:
-            val = op;
-            showSpecificMenu(op);
+            dat = op;
+            showTecnicasMenu();
             break;
         case 3:
-            Insercion(val);
-            break;
         case 4:
-            Eliminación(val);
+            tec = op;
+            showOperationsMenu();
             break;
         case 5:
-            BusquedaPuntual(val);
+            Insercion(dat, tec);
             break;
         case 6:
-            BusquedaRango(val);
+            Eliminacion(dat, tec);
+            break;
+        case 7:
+            BusquedaPuntual(dat, tec);
+            break;
+        case 8:
+            BusquedaRango(dat, tec);
             break;
         }
     }

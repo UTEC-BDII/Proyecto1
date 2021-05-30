@@ -1,8 +1,8 @@
-#include <bits/stdc++.h>
 #include "../staticHash/staticHash.h"
 #include "../sequentialFile/sequentialFile.h"
 using namespace std; 
-template <typename Rec>
+
+/*template <typename T>*/
 class Menu
 {
   private:
@@ -10,7 +10,6 @@ class Menu
     sequentialFile<long, Basket> seq1("basket_analysis.csv", 5);
     sequentialFile<long, WorldPopulation> seq2("WorldPopulation.csv", 5);
   */
-    staticHash<Rec> hash;
   public:
     Menu();
     void limpiar();
@@ -21,5 +20,6 @@ class Menu
     void removA();
     void showA();
     void showAllA();
-    void createA();
+    void crearRegistros();
+    void printRegistros();
 };

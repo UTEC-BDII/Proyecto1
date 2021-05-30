@@ -42,19 +42,32 @@ void testHash() {
 }
 
 void testSequential() {
-    sequentialFile<long, Basket> sf("basket_analysis.csv", 5);
-    // cout << sf.count(); // funciona
-    long pos;
-    binarySearch<long, Basket>(5, &sf, pos);
-    ///cout << "POS: " << pos << endl;
-    
-    long start = -5;
-    long end = 7;
-    auto v = sf.rangeSearch(start, end);
-    for (auto x : v) {
-        cout << x.key << " - " << x.Apple << " - " << x.Bread << " - " << x.next << "\n";
-    }
+    sequentialFile<long, Basket> sf("basket_analysis.csv", 3);
 
-    Basket basket;
-    sf.add(basket);
+    cout << "Agregar un registro:\n";
+    cout << "--------------\n";
+    Basket basket1(1002, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    sf.add(basket1);
+    Basket basket2(1012, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    sf.add(basket2);
+    Basket basket3(1045, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    sf.add(basket3);
+    Basket basket4(1000, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    sf.add(basket4);
+
+    cout << "Busqueda puntual:\n";
+    cout << "--------------\n";
+    long key = 210;
+    auto r = sf.search(key);
+    r.printData();
+
+    cout << "Busqueda en rango:\n";
+    cout << "--------------\n";
+    long start = 997;
+    long end = 9999;
+    vector<Basket> v;
+    v = sf.rangeSearch(start, end);
+    for (auto x : v) {
+        x.printData();
+    }
 }
