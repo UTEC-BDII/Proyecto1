@@ -4,7 +4,7 @@
 
 #include "../libs.h"
 #include "records/Basket.h"
-//#include "records/WorldPopulation.h"
+#include "records/WorldPopulation.h"
 
 template<typename T, typename Rec>
 class sequentialFile {
@@ -31,18 +31,5 @@ public:
 
 template <typename T, typename Rec>
 bool binarySearch(T key, sequentialFile<T, Rec>* seqFile, long &pos);
-
-/* template <typename T, typename Rec>
-Rec rangeEqual(T key, sequentialFile<T, Rec> seqFile) {
-    Rec record;
-    long pos;
-    binarySearch(key, seqFile, pos);
-    ifstream inFile;
-    inFile.open(seqFile.datfile);
-    inFile.seekg(pos*sizeof(Rec));
-    inFile.read((char*)&record, sizeof(record));
-    inFile.close();
-    return record;
-} */
 
 #endif //DB2_PROJECT_SEQUENTIALFILE_H
