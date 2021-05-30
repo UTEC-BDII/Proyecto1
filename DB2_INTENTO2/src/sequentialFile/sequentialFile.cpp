@@ -243,12 +243,19 @@ void sequentialFile<T, Record>::reconstruct() {
     
     inFile.close();
     outFile.close();
-    //if (std::remove(datfile.c_str())) cout << "removed " << datfile << endl;
-    //rename(reconstructFile.c_str(), datfile.c_str());
-    
-    datfile = reconstructFile; // replace previous binary file with new one
-    validRecords = countRecords(); // the number of valid records is the total number of records
-    auxRecords = 0; // the number of auxiliary records is 0
+
+    // Replace previous binary file with new one
+    if (std::remove(datfile.c_str()) != 0) {
+        cout << "Error. Failed to remove previous datfile.";
+        return;
+    }
+    if (rename(reconstructFile.c_str(), datfile.c_str()) != 0) {
+        cout << "Error. Failed to rename new datfile.";
+        return;
+    }
+
+    validRecords = countRecords(); // The number of valid records is the total number of records
+    auxRecords = 0; // The number of auxiliary records is 0
 
     cout << "File reconstructed.\n";
 }
