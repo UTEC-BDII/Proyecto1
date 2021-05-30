@@ -57,7 +57,7 @@ void testSequential() {
 
     cout << "Busqueda puntual:\n";
     cout << "--------------\n";
-    long key = 210;
+    long key = 1045;
     auto r = sf.search(key);
     r.printData();
 

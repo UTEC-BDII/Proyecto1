@@ -74,8 +74,21 @@ void sequentialFile<T, Record>::add(Record record) {
     long pos;
     binarySearch(record.key, this, pos);
 
-    // Read previous record
     Record prevRecord;
+
+    // If the record should be inserted at the beginning, replace with first record so
+    // that the first record is never in the auxiliary part
+    if (pos < 0) {
+        fs.seekg(0);
+        fs.read((char*)&prevRecord, sizeof(Record));
+        record.next = validRecords + auxRecords;
+        fs.seekp(0);
+        fs.write((char*) &record, sizeof(Record));
+        fs.seekp(0, fs.end);
+        fs.write((char*) &prevRecord, sizeof(Record));
+    }
+
+    // Read previous record
     fs.seekg(pos*sizeof(Record));
     fs.read((char*)&prevRecord, sizeof(Record));
 
