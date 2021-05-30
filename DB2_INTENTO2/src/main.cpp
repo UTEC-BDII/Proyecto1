@@ -19,24 +19,24 @@ int main() {
         case 1:
         case 2:
             dat = op;
-            showTecnicasMenu();
+            M.showTecnicasMenu();
             break;
         case 3:
         case 4:
             tec = op;
-            showOperationsMenu();
+            M.showOperationsMenu();
             break;
         case 5:
-            Insercion(dat, tec);
+            M.Insercion(dat, tec);
             break;
         case 6:
-            Eliminacion(dat, tec);
+            M.Eliminacion(dat, tec);
             break;
         case 7:
-            BusquedaPuntual(dat, tec);
+            M.BusquedaPuntual(dat, tec);
             break;
         case 8:
-            BusquedaRango(dat, tec);
+            M.BusquedaRango(dat);
             break;
         }
     }

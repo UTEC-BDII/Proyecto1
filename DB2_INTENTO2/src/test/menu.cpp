@@ -3,12 +3,6 @@
 using namespace std; 
 
 Menu::Menu(){}
-/*
-void Menu::limpiar()
-{
-  cout << "\033[2J\033[0;0H";
-}
-*/
 
 void Menu::esperar()
 {
@@ -174,17 +168,17 @@ void Menu::Insercion(int dat_, int tec_)
             cout << endl;
 
             cout << "Creando registro ..." << endl;
-            Basket record(key, apple, bread, butter, cheese, corn, dill, eggs, ice_cream, kidney_beans, milk, nutmeg, onion, sugar, unicorn, yogurt, chocolate);
+            Basket nuevo1(key, apple, bread, butter, cheese, corn, dill, eggs, ice_cream, kidney_beans, milk, nutmeg, onion, sugar, unicorn, yogurt, chocolate);
             cout << "Se creo el registro" << endl;
-            sequentialFile<long, Basket> sf("basket_analysis.csv", 5);
-            sf.add(record);
+            sequentialFile<long, Basket> basketFile("basket_analysis.csv", 3);
+            basketFile.add(nuevo1);
             cout << "Se añadio el registro" << endl;
 
             break;
         }
         break;
       case 2:
-        swtch(tec_)
+        switch(tec_)
         {
           case 3:
             break;
@@ -225,10 +219,10 @@ void Menu::Insercion(int dat_, int tec_)
             cout << endl;
 
             cout << "Creando registro ..." << endl;
-            WorldPopulation record(key, population, change_perc, net_change, density, urban, urban_perc);
+            //WorldPopulation nuevo2(key, population, change_perc, net_change, density, urban, urban_perc);
             cout << "Se creo el registro" << endl;
-            sequentialFile<long, WorldPopulation> sf("basket_analysis.csv", 5);
-            sf.add(record);
+            //sequentialFile<long, WorldPopulation> worldFile("basket_analysis.csv", 5);
+            //worldFile.add(nuevo2);
             cout << "Se añadio el registro" << endl;
 
             break;
@@ -243,7 +237,7 @@ void Menu::Eliminacion(int dat_, int tec_)
     switch(dat_)
     {
       case 1:
-        swtch(tec_)
+        switch(tec_)
         {
           case 3:
             
@@ -255,7 +249,7 @@ void Menu::Eliminacion(int dat_, int tec_)
         }
         break;
       case 2:
-        swtch(tec_)
+        switch(tec_)
         {
           case 3:
             break;
@@ -276,30 +270,25 @@ void Menu::BusquedaPuntual(int dat_, int tec_)
     switch(dat_)
     {
       case 1:
-        swtch(tec_)
+        switch(tec_)
         {
           case 3:
-            staticHash<BasketHash> sh("basket_analysis.csv");
-            BasketHash record;
-            sh.find(key, record);
             break;
           case 4:
-            sequentialFile<long, Basket> sf("basket_analysis.csv", 5);
-            Basket record = sf.search(key);      
-            record.printData();      
+            sequentialFile<long, Basket> basketFile("basket_analysis.csv", 3);
+            Basket record = basketFile.search(key);       
             break;
         }
         break;
       case 2:
-        swtch(tec_)
+        switch(tec_)
         {
           case 3:
             
             break;
           case 4:
-            sequentialFile<long, WorldPopulation> sf("WorldPopulation.csv", 5);
-            Basket record = sf.search(key);      
-            record.printData();  
+            sequentialFile<long, WorldPopulation> worldFile("WorldPopulation.csv", 3);
+            WorldPopulation record = worldFile.search(key);      
             break;
         }
         break;
@@ -317,21 +306,23 @@ void Menu::BusquedaRango(int dat_)
   cout << "Ingrese el fin del rango: ";
   cin >> end;
   cout << endl;
-  vector<Basket> v;
+  vector<Basket> vBasket;
+  vector<WorldPopulation> vWorld;
   switch(dat_)
   {
     case 1:
-      sequentialFile<long, Basket> sf("basket_analysis.csv", 5);
-      break;
+    {
+        sequentialFile<long, Basket> prueba1("basket_analysis.csv", 3);
+        vBasket = prueba1.rangeSearch(start, end);
+    }
+    break;
     case 2:
-      sequentialFile<long, WorldPopulation> sf("WorldPopulation.csv", 5);
-      break;
+    {
+        sequentialFile<long, WorldPopulation> prueba2("WorldPopulation", 3);
+        vWorld = prueba2.rangeSearch(start, end);
+    }
+    break;
   }
-  v = sf.rangeSearch(start, end);      
-  for (auto x : v) 
-  {
-    x.printData();
-  }  
   esperar();
 }
 */
