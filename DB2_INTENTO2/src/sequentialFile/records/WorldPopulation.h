@@ -1,6 +1,6 @@
 #include "Record.h"
 
-class WorldPopulation : public Record {
+class WorldPopulation : public RecordSeq {
 public:
     long key;   //year
     long Population;
@@ -9,17 +9,8 @@ public:
     int Density;
     long Urban;
     int UrbanPerc;
-    long next;
 public:
     WorldPopulation(){}
-
-    void read() override{
-
-    }
-
-    void write() override{
-        
-    }
 
     void serialization(string object) override {
 

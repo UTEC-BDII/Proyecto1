@@ -1,6 +1,6 @@
 #include "Record.h"
 
-class Basket : public Record {
+class Basket : public RecordSeq {
 public:
     long key;    //id
     bool Apple;
@@ -19,7 +19,6 @@ public:
     bool Unicorn;
     bool Yogurt;
     bool chocolate;
-    long next;
 public:
     Basket(){}
     
@@ -46,14 +45,6 @@ public:
         this->Unicorn = Unicorn;
         this->Yogurt = Yogurt;
         this->chocolate = chocolate;
-    }
-
-    void read() override{
-
-    }
-    
-    void write() override{
-
     }
 
     void serialization(string object) override {
