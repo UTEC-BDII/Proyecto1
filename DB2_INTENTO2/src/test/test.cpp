@@ -48,7 +48,7 @@ void testSequential() {
     cout << "--------------\n";
     Basket basket1(1002, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     sf.add(basket1);
-    Basket basket2(1012, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    Basket basket2(997, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     sf.add(basket2);
     Basket basket3(1045, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     sf.add(basket3);
@@ -63,7 +63,7 @@ void testSequential() {
 
     cout << "Busqueda en rango:\n";
     cout << "--------------\n";
-    long start = 997;
+    long start = 996;
     long end = 9999;
     vector<Basket> v;
     v = sf.rangeSearch(start, end);

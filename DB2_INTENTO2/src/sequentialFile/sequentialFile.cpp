@@ -86,6 +86,7 @@ void sequentialFile<T, Record>::add(Record record) {
         fs.write((char*) &record, sizeof(Record));
         fs.seekp(0, fs.end);
         fs.write((char*) &prevRecord, sizeof(Record));
+        return;
     }
 
     // Read previous record
