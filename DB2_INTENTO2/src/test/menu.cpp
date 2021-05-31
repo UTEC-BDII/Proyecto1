@@ -122,7 +122,7 @@ void testHash(string filename) {
       }
     }
 
-    cout << "Press any key to continue or 0 to exit...\n";
+    cout << "Enter any key to continue or 0 to exit...\n";
     cin >> n;
   } while (n != 0);
 }
@@ -192,7 +192,7 @@ void testSequential(string filename) {
         break;
     }
 
-    cout << "Press any key to continue or 0 to exit...\n";
+    cout << "Enter any key to continue or 0 to exit...\n";
     cin >> n;
   } while (n != 0);
 }
@@ -203,8 +203,8 @@ void testTimeBasket(string filename, int auxFactor, long start, long end) {
     using std::chrono::duration_cast;
     using std::chrono::duration;
     using std::chrono::milliseconds;
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen(seed);
     std::uniform_int_distribution<> distr(start, end);
 
     ofstream outFile;
@@ -283,8 +283,8 @@ void testTimeWorld(string filename, int auxFactor, long start, long end) {
     using std::chrono::duration_cast;
     using std::chrono::duration;
     using std::chrono::milliseconds;
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen(seed);
     std::uniform_int_distribution<> distr(start, end);
 
     ofstream outFile;
