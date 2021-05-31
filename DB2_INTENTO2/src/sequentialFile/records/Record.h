@@ -10,4 +10,5 @@ public:
 protected:
     virtual void serialization(string object) = 0;
     virtual void printData() = 0;
+    virtual void input() = 0;
 };

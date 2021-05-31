@@ -1,428 +1,358 @@
 #include "menu.h"
 
-using namespace std; 
+string choosefile() {
+  int n;
+  do {
+    clear();
+    cout << "  Choose dataset:  \n";
+    cout << "-------------------\n";
+    cout << "1. basket_analysis\n";
+    cout << "2. WorldPopulation\n";
+    cin >> n;
+  } while(n < 1 || n > 2);
+  switch (n) {
+    case 1:
+      return "basket_analysis.csv";
+    case 2:
+      return "WorldPopulation.csv";
+    default:
+      cerr << "ERROR";
+      break;
+  }
+  return "";
+}
 
-Menu::Menu(){}
-
-void Menu::limpiar()
-{
-  for (int i=0; i<30; i++)
-  {
+void clear() {
+  for (int i=0; i<30; i++) {
     cout << "\n";
   }
 }
 
-void Menu::esperar()
-{
-  int pas;
-  do
-  {
-    cout << "Presione 1 para continuar..." << endl;
-    cin >> pas;
-  }
-  while (pas != 1);
-  showMenu();
-}
-
-Menu::~Menu(){}
-
-void Menu::showMenu()
-{
-  limpiar();
-  cout << "ESCOGER DATASET" << endl;
-  cout << "---------------" << endl;
-  cout << endl;
-  cout << "1. Usar dataset 1 (basket_analysis)" << endl;
-  cout << "2. Usar dataset 2 (WorldPopulation)" << endl;
-  cout << endl;
-  cout << "0. Salir" << endl;
-}
-
-void Menu::showTecnicasMenu()
-{
-    limpiar();
-    cout << "ESCOGER TECNICA DE ORGANIZACIÓN" << endl;
-    cout << "-------------------------------" << endl;
-    cout << endl;
-    cout << "3. Hash" << endl;
-    cout << "4. Sequential" << endl;
-    cout << endl;
-    cout << "0. Salir" << endl;
-}
-
-void Menu::showOperationsMenu()
-{
-    limpiar();
-    cout << "ESCOGER OPERACION" << endl;
-    cout << "-----------------" << endl;
-    cout << endl;
-    cout << "5. Insertar un registro" << endl;
-    cout << "6. Eliminar un registro" << endl;
-    cout << "7. Buscar un registro por llave" << endl;
-    cout << "8. Buscar registros por rango" << endl;
-    cout << endl;
-    cout << "0. Salir" << endl;
-}
-
-void Menu::Insercion(int dat_, int tec_)
-{
-    limpiar();
-    switch(dat_)
-    {
-      case 1:
-      {
-        long key;
-        cout << "Llave: ";
-        cin >> key;
-        cout << endl;
-
-        string temp;
-        bool apple;
-        cout << "Apple: ";
-        cin >> temp;
-        apple = temp == "true";
-        cout << endl;
-
-        bool bread;
-        cout << "Bread: ";
-        cin >> temp;
-        bread = temp == "true";
-        cout << endl;
-
-        bool butter;
-        cout << "Butter: ";
-        cin >> temp;
-        butter = temp == "true";
-        cout << endl;
-
-        bool cheese;
-        cout << "Cheese: ";
-        cin >> temp;
-        cheese = temp == "true";
-        cout << endl;
-
-        bool corn;
-        cout << "Corn: ";
-        cin >> temp;
-        corn = temp == "true";
-        cout << endl;
-
-        bool dill;
-        cout << "Dill: ";
-        cin >> temp;
-        dill = temp == "true";
-        cout << endl;
-
-        bool eggs;
-        cout << "Eggs: ";
-        cin >> temp;
-        eggs = temp == "true";
-        cout << endl;
-
-        bool ice_cream;
-        cout << "Ice cream: ";
-        cin >> temp;
-        ice_cream = temp == "true";
-        cout << endl;
-
-        bool kidney_beans;
-        cout << "Kidney beans: ";
-        cin >> temp;
-        kidney_beans = temp == "true";
-        cout << endl;
-
-        bool milk;
-        cout << "Milk: ";
-        cin >> temp;
-        milk = temp == "true";
-        cout << endl;
-
-        bool nutmeg;
-        cout << "Nutmeg: ";
-        cin >> temp;
-        nutmeg = temp == "true";
-        cout << endl;
-
-        bool onion;
-        cout << "Onion: ";
-        cin >> temp;
-        onion = temp == "true";
-        cout << endl;
-
-        bool sugar;
-        cout << "Sugar: ";
-        cin >> temp;
-        sugar = temp == "true";
-        cout << endl;
-
-        bool unicorn;
-        cout << "Unicorn: ";
-        cin >> temp;
-        unicorn = temp == "true";
-        cout << endl;
-
-        bool yogurt;
-        cout << "Yogurt: ";
-        cin >> temp;
-        yogurt = temp == "true";
-        cout << endl;
-
-        bool chocolate;
-        cout << "Chocolate: ";
-        cin >> temp;
-        chocolate = temp == "true";
-        cout << endl;
-
-        cout << "Creando registro ..." << endl;
-        BasketSeq nuevo1(key, apple, bread, butter, cheese, corn, dill, eggs, ice_cream, kidney_beans, milk, nutmeg, onion, sugar, unicorn, yogurt, chocolate);
-        BasketHash nuevo3(key, apple, bread, butter, cheese, corn, dill, eggs, ice_cream, kidney_beans, milk, nutmeg, onion, sugar, unicorn, yogurt, chocolate);
-        cout << "Se creo el registro" << endl;
-        switch(tec_)
-        {
-          case 3:
-          {
-            staticHash<BasketHash> HashFile("basket_analysis.csv");
-            HashFile.addToHash(nuevo3);
-          }
-          break;
-          case 4:
-          {
-            sequentialFile<long, BasketSeq> basketFile("basket_analysis.csv", 3);
-            basketFile.add(nuevo1);
-          }
-          break;
-        }
-      }
-      break;
-      case 2:
-        long key;
-        cout << "Llave: ";
-        cin >> key;
-        cout << endl;
-
-        long population;
-        cout << "Population: ";
-        cin >> population;
-        cout << endl;
-
-        float change_perc;
-        cout << "Change Perc: ";
-        cin >> change_perc;
-        cout << endl;
-
-        long net_change;
-        cout << "Net change: ";
-        cin >> net_change;
-        cout << endl;
-
-        int density;
-        cout << "Density: ";
-        cin >> density;
-        cout << endl;
-
-        long urban;
-        cout << "Urban: ";
-        cin >> urban;
-        cout << endl;
-
-        int urban_perc;
-        cout << "Urban perc: ";
-        cin >> urban_perc;
-        cout << endl;
-
-        cout << "Creando registro ..." << endl;
-        WorldPopulationSeq nuevo2(key, population, change_perc, net_change, density, urban, urban_perc);
-        WorldPopulationHash nuevo4(key, population, change_perc, net_change, density, urban, urban_perc);
-        cout << "Se creo el registro" << endl;
-        switch(tec_)
-        {
-          
-          case 3: {
-            staticHash<WorldPopulationHash> HashFile("WorldPopulation.csv");
-            HashFile.addToHash(nuevo4);
-            break;
-          }
-          case 4:
-          {
-            sequentialFile<long, WorldPopulationSeq> worldFile("WorldPopulation.csv", 3);
-            worldFile.add(nuevo2);
-            break;
-          }
-        }
-        break;
-    }
-    cout << "Se añadio el registro" << endl;
-    esperar();
-}
-
-void Menu::Eliminacion(int dat_, int tec_)
-{
-    limpiar();
-    long key;
-    cout << "Ingrese la llave del registro a eliminar: ";
-    cin >> key;
-    cout << endl;
-    switch(dat_)
-    {
-      case 1:
-        switch(tec_)
-        {
-          case 3: {
-            staticHash<BasketHash> HashFile("basket_analysis.csv");
-            BasketHash eliminado1;
-            HashFile.remove(key, eliminado1);
-            break;
-          }
-          case 4:
-            sequentialFile<long, BasketSeq> basketFile("basket_analysis.csv", 3);
-            basketFile.remove(key);
-            break;
-        }
-        break;
-      case 2:
-        switch(tec_)
-        {
-          case 3: {
-            staticHash<WorldPopulationHash> HashFile("WorldPopulation.csv");
-            WorldPopulationHash eliminado2;
-            HashFile.remove(key, eliminado2);
-            break;
-          }
-          case 4:
-            sequentialFile<long, WorldPopulationSeq> WorldFile("WorldPopulation.csv", 3);
-            WorldFile.remove(key);
-            break;
-        }
-        break;
-    }
-    cout << "Se elimino el registro" << endl;
-    esperar();
-}
-
-void Menu::BusquedaPuntual(int dat_, int tec_)
-{
-    limpiar();
-    long key;
-    cout << "Ingrese la llave a buscar: ";
-    cin >> key;
-    cout << endl;
-    switch(dat_)
-    {
-      case 1:
-        switch(tec_)
-        {
-          case 3: {
-            staticHash<BasketHash> HashFile("basket_analysis.csv");
-            BasketHash record1;
-            auto flag = HashFile.find(key, record1);
-            if (flag)
-            {
-              record1.printData();
-            }
-            else
-            {
-              cout << "No se encontro el registro" << endl;
-            }
-            break;
-          }
-          case 4:
-          {
-            sequentialFile<long, BasketSeq> basketFile("basket_analysis.csv", 3);
-            BasketSeq record2 = basketFile.search(key);       
-            record2.printData();
-          }
-          break;
-        }
-        break;
-      case 2:
-        switch(tec_)
-        {
-          case 3: {
-            staticHash<WorldPopulationHash> HashFile("WorldPopulation.csv");
-            WorldPopulationHash record3;
-            auto flag = HashFile.find(key, record3);
-            if (flag)
-            {
-              record3.printData();
-            }
-            else
-            {
-              cout << "No se encontro el registro" << endl;
-            }
-            break;
-          }
-          case 4:
-          {
-            sequentialFile<long, WorldPopulationSeq> worldFile("WorldPopulation.csv", 3);
-            WorldPopulationSeq record4 = worldFile.search(key);   
-            record4.printData();   
-          }
-          break;
-        }
-        break;
-    }
-    esperar();
-}
-
-void Menu::BusquedaRango(int dat_, int tec_)
-{
-  limpiar();
-  long start;
-  long end;
-  cout << "Ingrese el inicio del rango: ";
-  cin >> start;
-  cout << endl;
-  cout << "Ingrese el fin del rango: ";
-  cin >> end;
-  cout << endl;
-  vector<BasketSeq> vBasket;
-  vector<WorldPopulationSeq> vWorld;
-  vector<BasketHash> vHashBasket;
-  vector<WorldPopulationHash> vHashWorld;
-  switch(dat_)
-  {
+string choosetechnique() {
+  int n;
+  do {
+    clear();
+    cout << "  Choose technique:  \n";
+    cout << "-------------------\n";
+    cout << "1. Sequential File\n";
+    cout << "2. Static Hash\n";
+    cout << "3. Test execution time of both techniques on dataset\n";
+    cin >> n;
+  } while(n < 1 || n > 3);
+  switch (n) {
     case 1:
-      switch(tec_)
-      {
-        case 3:
-        {
-          staticHash<BasketHash> HashFile("basket_analysis.csv");
-          vHashBasket = HashFile.rangeSearch(start, end);
-        }
-        break;
-        case 4:
-        {
-          sequentialFile<long, BasketSeq> prueba1("basket_analysis.csv", 3);
-          vBasket = prueba1.rangeSearch(start, end);
-        }
-        break;
-      }
-      for (auto x : vBasket) 
-      {
-        x.printData();
-      }
-      break;
+      return "sequential";
     case 2:
-      switch(tec_)
-      {
-        case 3:
-        {
-          staticHash<WorldPopulationHash> HashFile2("WorldPopulation.csv");
-          vHashWorld = HashFile2.rangeSearch(start, end);
-        }    
-        break;
-        case 4:
-        {
-          sequentialFile<long, WorldPopulationSeq> prueba2("WorldPopulation.csv", 3);
-          vWorld = prueba2.rangeSearch(start, end);     
-        }
-        break;
-      }
-      for (auto x : vWorld) 
-      {
-        x.printData();
-      } 
+      return "hash";
+    case 3:
+      return "test";
+    default:
+      cerr << "ERROR";
       break;
   }
-  esperar();
+  return "";
+}
+
+template <typename Record>
+void testHash(string filename) {
+  staticHash<Record> hash(filename);
+
+  int n;
+  do {
+    do {
+      clear();
+      cout << "   Choose action:   \n";
+      cout << "--------------------\n";
+      cout << "1. Add record\n";
+      cout << "2. Remove record\n";
+      cout << "3. Search record\n";
+      cout << "4. Search records in range\n";
+      cin >> n;
+    } while(n < 1 || n > 4);
+    
+    switch (n) {
+      case 1: {
+        clear();
+        cout << "Insert key: ";
+        Record record;
+        record.input();
+        hash.addToHash(record);
+        break;
+      }
+      case 2: {
+        clear();
+        cout << "Insert key: ";
+        long key;
+        cin >> key;
+        Record record;
+        if (hash.remove(key, record)) {
+          cout << "Record has been removed\n";
+        } else {
+          cout << "Record has not been removed\n";
+        }
+        break;
+      }
+      case 3: {
+        clear();
+        cout << "Insert key: ";
+        long key;
+        cin >> key;
+        Record record;
+        if (hash.find(key, record)) {
+          cout << "\nRecord was found\n";
+          record.printData();
+        } else {
+          cout << "Record was not found\n";
+        }
+        break;
+      }
+      case 4: {
+        clear();
+        long beginkey, endkey;
+        cout << "Insert start key: ";
+        cin >> beginkey;
+        cout << "Insert final key: ";
+        cin >> endkey;
+        cout << endl;
+        vector<Record> v = hash.rangeSearch(beginkey, endkey);
+        for (auto i : v) {
+          i.printData();
+        }
+        break;
+      }
+    }
+
+    cout << "Press any key to continue or 0 to exit...\n";
+    cin >> n;
+  } while (n != 0);
+}
+
+template <typename Record>
+void testSequential(string filename) {
+  int auxFactor;
+  clear();
+  cout << "Define auxiliary record factor: ";
+  cin >> auxFactor;
+  sequentialFile<long, Record> sf(filename, auxFactor);
+
+  int n;
+  do {
+    do {
+      clear();
+      cout << "   Choose action:   \n";
+      cout << "--------------------\n";
+      cout << "1. Add record\n";
+      cout << "2. Remove record\n";
+      cout << "3. Search record\n";
+      cout << "4. Search records in range\n";
+      cin >> n;
+    } while(n < 1 || n > 4);
+    
+    long key, start, end;
+    switch (n) {
+      case 1: {
+        clear();
+        Record record;
+        record.input();
+        cout << endl;
+        sf.add(record);
+        break;
+      }
+      case 2: {
+        clear();
+        cout << "Insert key: ";
+        cin >> key;
+        sf.remove(key);
+        break;
+      }
+      case 3: {
+        clear();
+        cout << "Insert key: ";
+        cin >> key;
+        cout << endl;
+        Record record2 = sf.search(key);
+        record2.printData();
+        break;
+      }
+      case 4: {
+        clear();
+        cout << "Insert start key: ";
+        cin >> start;
+        cout << "Insert end key: ";
+        cin >> end;
+        cout << endl;
+        vector<Record> v = sf.rangeSearch(start, end);
+        for (auto i : v) {
+          i.printData();
+        }
+        break;
+      }
+      default:
+        cerr << "ERROR";
+        break;
+    }
+
+    cout << "Press any key to continue or 0 to exit...\n";
+    cin >> n;
+  } while (n != 0);
+}
+
+void testTimeBasket(string filename, int auxFactor, long start, long end) {
+    clear();
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(start, end);
+
+    ofstream outFile;
+    long key;
+    
+    outFile.open("results_basket_seq.csv");
+    sequentialFile<long, BasketSeq> sf(filename, auxFactor);
+
+    cout << "Sequential File add test.\n";
+    cout << "--------------------------\n";
+    outFile << "Operacion,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10\n";
+    outFile << "add,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        BasketSeq basket(key);
+        auto t1 = high_resolution_clock::now();
+        sf.add(basket);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+
+    cout << "\nSequential File search test.\n";
+    cout << "--------------------------\n";
+    outFile << "\nsearch,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        auto t1 = high_resolution_clock::now();
+        sf.search(key);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+    outFile.close();
+
+    outFile.open("results_basket_hash.csv");
+    staticHash<BasketHash> hash(filename);
+    BasketHash record;
+
+    cout << "\nStatic Hash add test.\n";
+    cout << "--------------------------\n";
+    outFile << "Operacion,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10\n";
+    outFile << "add,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        BasketHash basket(key);
+        auto t1 = high_resolution_clock::now();
+        hash.addToHash(basket);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+
+    cout << "\nStatic Hash search test.\n";
+    cout << "--------------------------\n";
+    outFile << "\nsearch,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        auto t1 = high_resolution_clock::now();
+        hash.find(key, record);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+    outFile.close();
+    cout << "Results can be viewed on results_basket_seq.csv and results_basket_hash.csv\n";
+}
+
+void testTimeWorld(string filename, int auxFactor, long start, long end) {
+    clear();
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(start, end);
+
+    ofstream outFile;
+    long key;
+    
+    outFile.open("results_world_seq.csv");
+    sequentialFile<long, WorldPopulationSeq> sf(filename, auxFactor);
+
+    cout << "Sequential File add test.\n";
+    cout << "--------------------------\n";
+    outFile << "Operacion,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10\n";
+    outFile << "add,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        WorldPopulationSeq world(key);
+        auto t1 = high_resolution_clock::now();
+        sf.add(world);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+
+    cout << "\nSequential File search test.\n";
+    cout << "--------------------------\n";
+    outFile << "\nsearch,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        auto t1 = high_resolution_clock::now();
+        sf.search(key);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+    outFile.close();
+
+    outFile.open("results_world_hash.csv");
+    staticHash<WorldPopulationHash> hash(filename);
+    WorldPopulationHash record;
+
+    cout << "\nStatic Hash add test.\n";
+    cout << "--------------------------\n";
+    outFile << "Operacion,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10\n";
+    outFile << "add,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        WorldPopulationHash world(key);
+        auto t1 = high_resolution_clock::now();
+        hash.addToHash(world);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+
+    cout << "\nStatic Hash search test.\n";
+    cout << "--------------------------\n";
+    outFile << "\nsearch,";
+    for (size_t i = 0; i < 10; i++) {
+        key = distr(gen);
+        auto t1 = high_resolution_clock::now();
+        hash.find(key, record);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count();
+        if (i < 9) outFile << ",";
+    }
+    outFile.close();
+    cout << "Results can be viewed on results_world_seq.csv and results_world_hash.csv\n";
 }

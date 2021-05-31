@@ -14,6 +14,7 @@ class RecordHash {
 protected:
     virtual void serialization(string object) = 0;
     virtual void printData() = 0;
+    virtual void input() = 0;
 };
 
 class BasketHash : public RecordHash {
@@ -64,6 +65,7 @@ public:
         this->chocolate = chocolate;
     }
 
+    // Constructor for testing
     BasketHash(long key) {
         this->key = key;
         this->Apple = 1;
@@ -152,28 +154,62 @@ public:
         chocolate = att == "True";
     }
 
-    void printData(){
+    void printData() override {
         cout << "ID: " << key << endl;
         cout << "Apple: " << Apple << endl;
         cout << "Bread: " << Bread << endl;
+        cout << "Butter: " << Butter << endl;
+        cout << "Cheese: " << Cheese << endl;
+        cout << "Corn: " << Corn << endl;
+        cout << "Dill: " << Dill << endl;
+        cout << "Eggs: " << Eggs << endl;
+        cout << "Ice_cream: " << Ice_cream << endl;
+        cout << "Kidney_Beans: " << Kidney_Beans << endl;
+        cout << "Milk: " << Milk << endl;
+        cout << "Nutmeg: " << Nutmeg << endl;
+        cout << "Onion: " << Onion << endl;
+        cout << "Sugar: " << Sugar << endl;
+        cout << "Unicorn: " << Unicorn << endl;
+        cout << "Yogurt: " << Yogurt << endl;
+        cout << "chocolate: " << chocolate << endl;
         cout << "--------------\n";
+    }
+
+    void input() override {
+        cout << "ID (key): "; cin >> key;
+        cout << "Apple: "; cin >> Apple;
+        cout << "Bread: "; cin >> Bread;
+        cout << "Butter: "; cin >> Butter;
+        cout << "Cheese: "; cin >> Cheese;
+        cout << "Corn: "; cin >> Corn;
+        cout << "Dill: "; cin >> Dill;
+        cout << "Eggs: "; cin >> Eggs;
+        cout << "Ice_cream: "; cin >> Ice_cream;
+        cout << "Kidney_Beans: "; cin >> Kidney_Beans;
+        cout << "Milk: "; cin >> Milk;
+        cout << "Nutmeg: "; cin >> Nutmeg;
+        cout << "Onion: "; cin >> Onion;
+        cout << "Sugar: "; cin >> Sugar;
+        cout << "Unicorn: "; cin >> Unicorn;
+        cout << "Yogurt: "; cin >> Yogurt;
+        cout << "chocolate: "; cin >> chocolate;
     }
 };
 
 class WorldPopulationHash : public RecordHash {
 public:
     long key;   //year
-    long Population;
+    long long Population;
     float ChangePerc;
-    long NetChange;
+    long long NetChange;
     int Density;
-    long Urban;
+    long long Urban;
     int UrbanPerc;
 public:
     WorldPopulationHash(){}
 
-    WorldPopulationHash(long key, long Population, float ChangePerc, 
-                    long NetChange, int Density, long Urban, int UrbanPerc) {
+    WorldPopulationHash(long key, long long Population, float ChangePerc, 
+                    long long NetChange, int Density, long long Urban, int UrbanPerc) {
         this->key = key;
         this->Population = Population;
         this->ChangePerc = ChangePerc;
@@ -181,6 +217,17 @@ public:
         this->Density = Density;
         this->Urban = Urban;
         this->UrbanPerc = UrbanPerc;
+    }
+
+    // Constructor for testing
+    WorldPopulationHash(long key) {
+        this->key = key;
+        this->Population = 100;
+        this->ChangePerc = 100;
+        this->NetChange = 100;
+        this->Density = 100;
+        this->Urban = 100;
+        this->UrbanPerc = 100;
     }
 
     void serialization(string object) override {
@@ -195,19 +242,19 @@ public:
                         key = stol(att);
                         break;
                     case 1:
-                        Population = stol(att);
+                        Population = stoll(att);
                         break;
                     case 2:
                         ChangePerc = stof(att);
                         break;
                     case 3:
-                        NetChange = stol(att);
+                        NetChange = stoll(att);
                         break;
                     case 4:
                         Density = stoi(att);
                         break;
                     case 5:
-                        Urban = stol(att);
+                        Urban = stoll(att);
                         break;
                     default:
                         cerr << "Error in serializing\n";
@@ -231,6 +278,16 @@ public:
         cout << "Urban: " << Urban << endl;
         cout << "UrbanPerc: " << UrbanPerc << endl;
         cout << "--------------\n";
+    }
+
+    void input() override {
+        cout << "Year (key): "; cin >> key;
+        cout << "Population: "; cin >> Population;
+        cout << "ChangePerc: "; cin >> ChangePerc;
+        cout << "NetChange: "; cin >> NetChange;
+        cout << "Density: "; cin >> Density;
+        cout << "Urban: "; cin >> Urban;
+        cout << "UrbanPerc: "; cin >> UrbanPerc;
     }
 };
 
@@ -263,7 +320,9 @@ struct indexBucket{
         }
         for (int i=0; i<size; i++) {
             if (indexes[i]->key == key) {
+                auto temp = indexes[i];
                 indexes[i] = indexes[size-1];
+                indexes[size-1] = temp;
                 size--;
                 return true;
             }
@@ -282,19 +341,21 @@ private:
     long indexCount;
 
 public:
+    staticHash(){}
     staticHash(string name) : filename(name), recordCount(0), indexCount(0) {
         ifstream infile, indexinfile;
         ofstream outfile, indexoutfile;
 
-        infile.open(filename.c_str());
-
-        datafilename = regex_replace(filename, regex("csv"), "dat");
-        outfile.open(datafilename, ios::out | ios::binary);
-
+        size_t position = filename.find(".");
+        string extractName = (string::npos == position)? filename : filename.substr(0, position);
+        string newFile = extractName + "_hash.csv";
+        datafilename = regex_replace(newFile, regex("csv"), "dat");
         indexfilename = "index.dat";
-        indexoutfile.open(indexfilename, ios::binary);
 
+        infile.open(filename.c_str());
         indexinfile.open(indexfilename, ios::in | ios::binary);
+        outfile.open(datafilename, ios::out | ios::binary);
+        indexoutfile.open(indexfilename, ios::binary);
 
         if(!infile || !outfile || !indexoutfile || !indexinfile) {
             cerr << "ERROR" << endl;
@@ -314,41 +375,36 @@ public:
             Record r;
             r.serialization(str);
 
-            // escribir en file.dat
+            /// write in file.dat
             outfile.write((char*)&r, sizeof(r));
 
             long address = (recordCount++)*sizeof(Record);
             long hashKey = hashFunction(r.key);
-            indexBucket nbucket;    //cambiar por bucket luego
+
             indexinfile.seekg(hashKey*sizeof(indexBucket));
-            indexinfile.read((char*)&nbucket, sizeof(indexBucket));
-            if ( nbucket.size < MAX_SIZE_BUCKET ) {
-                nbucket.add(address, r.key);
+            indexinfile.read((char*)&bucket, sizeof(indexBucket));
+            if ( bucket.size < MAX_SIZE_BUCKET ) {
+                bucket.add(address, r.key);
                 indexoutfile.seekp(hashKey*sizeof(indexBucket));
-                indexoutfile.write((char*)&nbucket, sizeof(indexBucket));
+                indexoutfile.write((char*)&bucket, sizeof(indexBucket));
             } else {
-                cout << "YA NO POR FAVOR";
                 indexBucket newBucket;
 
                 newBucket.add(address, r.key);
                 newBucket.next = (indexCount++)*sizeof(indexBucket);
-                cout << endl << "INDEX: " << indexCount << " - NEXT:" << newBucket.next << endl;
 
                 indexoutfile.seekp(hashKey*sizeof(indexBucket));
                 indexoutfile.write((char*)&newBucket, sizeof(indexBucket));
 
                 indexoutfile.seekp((indexCount-1)*sizeof(indexBucket));
-                indexoutfile.write((char*)&nbucket, sizeof(indexBucket));
+                indexoutfile.write((char*)&bucket, sizeof(indexBucket));
             }
-            // printHash();
         }
         indexoutfile.close();
         indexinfile.close();
 
         outfile.close();
         infile.close();
-
-        cout << endl << "recordCount: " << recordCount << endl;
     }
 
     long hashFunction(const long& id) {
@@ -358,11 +414,13 @@ public:
     void addToHash(Record record) {
         long address = recordCount*sizeof(record);
 
+        /// Write in the data file
         ofstream outfile;
         outfile.open(datafilename, ios::app | ios::binary);
         outfile.write((char*)&record, sizeof(Record));
         outfile.close();
 
+        /// Take the bucket in the index file
         long hashKey = hashFunction(record.key);
         indexBucket bucket;
         ifstream infile;
@@ -371,11 +429,11 @@ public:
         infile.read((char*)&bucket, sizeof(indexBucket));
         infile.close();
 
+        fstream indexoutfile;
+        indexoutfile.open(indexfilename, ios::in | ios::out | ios::binary);
         if ( bucket.size < MAX_SIZE_BUCKET ) {
-            fstream indexoutfile;
-            indexoutfile.open(indexfilename, ios::in | ios::out | ios::binary);
-            if (!indexoutfile) {
-                cerr << "ERROR P";
+            if ( !indexoutfile ) {
+                cerr << "ERROR";
                 exit(1);
             }
             bucket.add(address, record.key);
@@ -384,25 +442,22 @@ public:
             indexoutfile.close();
 
         } else {
-            // Create a new bucket using LIFO
+            /// Create a new bucket using LIFO
             indexBucket newBucket;
 
-            // Add the new index in a new empty bucket
+            /// Add the new index in a new empty bucket
             newBucket.add(address, record.key);
             newBucket.next = (indexCount++)*sizeof(indexBucket);
 
-            // write the new bucket in old bucket's position
-            ofstream indexoutfile;
-            indexoutfile.open(indexfilename, ios::binary);
+            /// write the new bucket in old bucket's position
             indexoutfile.seekp(hashKey*sizeof(indexBucket));
             indexoutfile.write((char*)&newBucket, sizeof(indexBucket));
 
-            // Save the old bucket to add it into the end of the file
+            /// Save the old bucket to add it into the end of the file
             indexoutfile.seekp((indexCount-1)*sizeof(indexBucket));
             indexoutfile.write((char*)&bucket, sizeof(indexBucket));
             indexoutfile.close();
         }
-
     }
 
     bool find(const long key, Record& record) {
@@ -431,61 +486,101 @@ public:
             }
             n = bucket.next;
         } while (n != -1);
+
+        if (indexfile.is_open())
+            indexfile.close();
         return false;
     }
 
+    /// Stratagy to remove: swap the last element from de first bucket
+    /// with the element to remove and do a size-- in this bucket
+    /// See the next cases:
+    /// case1: the element to remove is in the first bucket
+    /// case2: the element to remove is in the first bucket & is the last element
+    /// case3: the element to remove is not in the first bucket
+
     bool remove(long key, Record& record) {
         long hashKey = hashFunction(key);
+        long savedPosition;
         indexBucket bucket;
 
-        ifstream indexfile;
+        ifstream indexfile, read;
         indexfile.open(indexfilename, ios::in | ios::binary);
         indexfile.seekg(hashKey*sizeof(indexBucket));
         indexfile.read((char*)&bucket, sizeof(indexBucket));
         indexfile.close();
-        
-        /// Stratagy: swap the last element from de first bucket
-        /// with the element to remove and do a size-- in this bucket
-        /// case1: the element to remove is in the first bucket
-        /// case2: the element to remove is in the first bucket & is the last element
-        /// case3: the element to remove is not in the first bucket
+
+        /// need a bucket with a size > 0
+        if ( bucket.size == 0 && bucket.next == -1 ) {
+            return false;
+        } else if ( bucket.size == 0 ) {
+            indexfile.open(indexfilename, ios::in | ios::binary);
+            while (bucket.size == 0 && hashKey != -1) {
+                // To write in that position
+                hashKey = bucket.next / sizeof(indexBucket);
+                indexfile.seekg(hashKey * sizeof(indexBucket));
+                indexfile.read((char*)&bucket, sizeof(indexBucket));
+            }
+            indexfile.close();
+        }
 
         fstream outfile;
         outfile.open(indexfilename, ios::in | ios::out | ios::binary);
-        if (bucket.remove(key)) {
+        read.open(datafilename, ios::in | ios::binary);
+        if ( bucket.remove(key) ) {
+            /// Write the changes if the element is in this bucket
             outfile.seekp(hashKey*sizeof(indexBucket), ios::beg);
             outfile.write((char*)&bucket, sizeof(indexBucket));
             outfile.close();
-        } else {
-            long n = bucket.next;
+
+            /// Save the removed element (we are sure that element is in that position)
+            savedPosition = bucket.indexes[bucket.size]->index;
+            read.seekg(savedPosition);
+            read.read((char*)&record, sizeof(Record));
+            read.close();
+            return true;
+        } else if ( bucket.next != -1 ) {
+            /// Save the next position
+            long newNext = bucket.next;
             indexBucket otherBucket;
             indexElement* swap = bucket.indexes[bucket.size-1];
             indexfile.open(indexfilename, ios::in | ios::binary);
             do {
-                indexfile.seekg(n);
+                indexfile.seekg(newNext);
                 indexfile.read((char*)&otherBucket, sizeof(indexBucket));
-                for (int i=0; i<otherBucket.size; i++) {
-                    cout << otherBucket.indexes[i]->key << " - ";
-                    if (otherBucket.indexes[i]->key == key) {
+                for ( int i=0; i<otherBucket.size; i++ ) {
+                    if ( otherBucket.indexes[i]->key == key ) {
+                        /// Save the element to remove
+                        savedPosition = otherBucket.indexes[i]->index;
+                        read.seekg(savedPosition);
+                        read.read((char*)&record, sizeof(Record));
+                        read.close();
+
+                        /// Overwrite the element
                         otherBucket.indexes[i] = swap;
                         bucket.size--;
 
+                        /// Save the changes
                         outfile.seekp(hashKey*sizeof(indexBucket));
                         outfile.write((char*)&bucket, sizeof(indexBucket));
-                        outfile.seekp(n);
+
+                        outfile.seekp(newNext);
                         outfile.write((char*)&otherBucket, sizeof(indexBucket));
+
                         indexfile.close();
                         outfile.close();
                         return true;
                     }
                 }
-                n = otherBucket.next;
-            } while (n != -1);
+                newNext = otherBucket.next;
+            } while ( newNext != -1 );
 
         }
 
-        indexfile.close();
-        outfile.close();
+        if (indexfile.is_open())
+            indexfile.close();
+        if (outfile.is_open())
+            outfile.close();
         return false;
     }
 
@@ -494,15 +589,15 @@ public:
         ifstream infile, datafile;
         infile.open(indexfilename, ios::in | ios::binary);
         datafile.open(datafilename, ios::in | ios::binary);
-        for (auto i=0; i<MAX_SIZE_HASH; i++) {
+        for ( auto i=0; i<MAX_SIZE_HASH; i++ ) {
             indexBucket curr;
             long n = i*sizeof(indexBucket);
             do {
                 infile.seekg(n);
                 infile.read((char*)&curr, sizeof(indexBucket));
-                for (int j=0; j<curr.size; j++) {
+                for ( int j=0; j<curr.size; j++ ) {
                     long currkey = curr.indexes[j]->key;
-                    if (currkey >= beginkey && currkey <= endkey) {
+                    if ( currkey >= beginkey && currkey <= endkey ) {
                         Record record;
                         datafile.seekg(curr.indexes[j]->index);
                         datafile.read((char*)&record, sizeof(Record));
@@ -510,10 +605,12 @@ public:
                     }
                 }
                 n = curr.next;
-            } while (n != -1);
+            } while ( n != -1 );
         }
-        datafile.close();
-        infile.close();
+        if ( datafile.is_open() )
+            datafile.close();
+        if ( infile.is_open() )
+            infile.close();
         return r;
     }
 

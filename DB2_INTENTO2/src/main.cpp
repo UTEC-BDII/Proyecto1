@@ -1,49 +1,33 @@
-#include "test/test.cpp"
-#include "test/menu.h"
+#include "test/menu.cpp"
 
 int main() {
-
-    Menu M;
-    M.showMenu();
-    int op;
-    int dat;
-    int tec;
-    do
-    {
-        cin >> op;
-        switch (op)
-        {
-        case 0:
-            cout << "se acabo..." << endl;
-            break;
-        case 1:
-        case 2:
-            dat = op;
-            M.showTecnicasMenu();
-            break;
-        case 3:
-        case 4:
-            tec = op;
-            M.showOperationsMenu();
-            break;
-        case 5:
-            M.Insercion(dat, tec);
-            break;
-        case 6:
-            M.Eliminacion(dat, tec);
-            break;
-        case 7:
-            M.BusquedaPuntual(dat, tec);
-            break;
-        case 8:
-            M.BusquedaRango(dat, tec);
-            break;
+    string filename = choosefile();
+    string technique = choosetechnique();
+    
+    if (technique == "sequential") {
+        if (filename == "basket_analysis.csv") {
+            testSequential<BasketSeq>(filename);
+        } else if (filename == "WorldPopulation.csv") {
+            testSequential<WorldPopulationSeq>(filename);
+        }
+    } else if (technique == "hash") {
+        if (filename == "basket_analysis.csv") {
+            testHash<BasketHash>(filename);
+        } else if (filename == "WorldPopulation.csv") {
+            testHash<WorldPopulationHash>(filename);
+        }
+    } else if (technique == "test") {
+        if (filename == "basket_analysis.csv") {
+            testTimeBasket(filename, 5, -100, 1500);
+        } else if (filename == "WorldPopulation.csv") {
+            testTimeWorld(filename, 5, 1920, 2040);
         }
     }
-    while (op != 0);
-    
-    // testHash();
-    //testSequential();
+
+    staticHash<BasketHash> HashBasket("basket_analysis.csv");
+    sequentialFile<long, BasketSeq> SeqBasket("basket_analysis.csv", 3);
+    staticHash<WorldPopulationHash> HashWorld("WorldPopulation.csv");
+    sequentialFile<long, WorldPopulationSeq> SeqWorld("WorldPopulation.csv", 3);
 
     return 0;
 }

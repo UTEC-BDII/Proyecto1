@@ -31,6 +31,7 @@ private:
     size_t auxFactor;
 
 public:
+    sequentialFile(){}
     sequentialFile(string filename, size_t auxFactor);
     void createBinaryFile();
     size_t countRecords();

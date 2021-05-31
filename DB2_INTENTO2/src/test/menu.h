@@ -1,19 +1,15 @@
 #include "../staticHash/staticHash.h"
+#include "../staticHash/staticHash.cpp"
 #include "../sequentialFile/sequentialFile.h"
-using namespace std; 
- 
-class Menu
-{
-  public:
-    Menu();
-    void limpiar();
-    void esperar();
-    virtual ~Menu();
-    void showMenu();
-    void showTecnicasMenu();
-    void showOperationsMenu();
-    void Insercion(int dat_, int tec_);
-    void Eliminacion(int dat_, int tec_);
-    void BusquedaPuntual(int dat_, int tec_);
-    void BusquedaRango(int dat_, int tec_);
-};
+#include "../sequentialFile/sequentialFile.cpp"
+
+template <typename Record>
+void testHash(string filename);
+
+template <typename Record>
+void testSequential(string filename);
+
+void clear();
+string choosefile();
+string choosetechnique();
+void testTimeBasket(string filename, int auxFactor, long start, long end);

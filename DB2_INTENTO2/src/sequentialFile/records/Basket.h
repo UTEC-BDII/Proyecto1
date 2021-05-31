@@ -47,6 +47,7 @@ public:
         this->chocolate = chocolate;
     }
 
+    // Constructor for testing
     BasketSeq(long key) {
         this->key = key;
         this->Apple = 1;
@@ -140,7 +141,7 @@ public:
         cout << "ID: " << key << endl;
         cout << "Apple: " << Apple << endl;
         cout << "Bread: " << Bread << endl;
-        /* cout << "Butter: " << Butter << endl;
+        cout << "Butter: " << Butter << endl;
         cout << "Cheese: " << Cheese << endl;
         cout << "Corn: " << Corn << endl;
         cout << "Dill: " << Dill << endl;
@@ -153,8 +154,28 @@ public:
         cout << "Sugar: " << Sugar << endl;
         cout << "Unicorn: " << Unicorn << endl;
         cout << "Yogurt: " << Yogurt << endl;
-        cout << "chocolate: " << chocolate << endl; */
+        cout << "chocolate: " << chocolate << endl;
         cout << "Next record (logic position): " << next << endl;
         cout << "--------------\n";
+    }
+
+    void input() override {
+        cout << "ID (key): "; cin >> key;
+        cout << "Apple: "; cin >> Apple;
+        cout << "Bread: "; cin >> Bread;
+        cout << "Butter: "; cin >> Butter;
+        cout << "Cheese: "; cin >> Cheese;
+        cout << "Corn: "; cin >> Corn;
+        cout << "Dill: "; cin >> Dill;
+        cout << "Eggs: "; cin >> Eggs;
+        cout << "Ice_cream: "; cin >> Ice_cream;
+        cout << "Kidney_Beans: "; cin >> Kidney_Beans;
+        cout << "Milk: "; cin >> Milk;
+        cout << "Nutmeg: "; cin >> Nutmeg;
+        cout << "Onion: "; cin >> Onion;
+        cout << "Sugar: "; cin >> Sugar;
+        cout << "Unicorn: "; cin >> Unicorn;
+        cout << "Yogurt: "; cin >> Yogurt;
+        cout << "chocolate: "; cin >> chocolate;
     }
 };

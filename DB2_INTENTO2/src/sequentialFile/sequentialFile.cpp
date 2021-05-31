@@ -25,7 +25,11 @@ void sequentialFile<T, Record>::createBinaryFile() {
     long s = 0;
 
     string str;
-    datfile = regex_replace(filename, regex("csv"), "dat");
+
+    size_t position = filename.find(".");
+    string extractName = (string::npos == position)? filename : filename.substr(0, position);
+    string newFile = extractName + "_seq.csv";
+    datfile = regex_replace(newFile, regex("csv"), "dat");
 
     outfile.open(datfile, ios::out | ios::binary);
     
@@ -86,6 +90,8 @@ void sequentialFile<T, Record>::add(Record record) {
         fs.write((char*) &record, sizeof(Record));
         fs.seekp(0, fs.end);
         fs.write((char*) &prevRecord, sizeof(Record));
+        auxRecords++;
+        cout << "Added record.\n";
         return;
     }
 
@@ -122,7 +128,10 @@ void sequentialFile<T, Record>::remove(T key) {
     if (!found) {
         // The record with the lowest key is always a valid record, so if pos < 0 the searched
         // record is not on the dataset. Return.
-        if (pos < 0) return;
+        if (pos < 0) {
+            cout << "Error. Record with key " << key << " not found.\n";
+            return;
+        }
         else { // If not found and pos >= 0, read record at pos
             prevPos = pos;
             fs.seekg(prevPos*sizeof(Record));
@@ -145,6 +154,7 @@ void sequentialFile<T, Record>::remove(T key) {
                     fs.write((char*) &prevRecord, sizeof(Record));
                     fs.seekp(pos*sizeof(Record));
                     fs.write((char*) &record, sizeof(Record));
+                    cout << "Removed record with key " << key << ".\n";
                     return;
                 }
                 prevPos = pos;
@@ -198,7 +208,10 @@ Record sequentialFile<T, Record>::search(T key) {
     if (!found) {
         // The record with the lowest key is always a valid record, so if pos < 0 the searched
         // record is not on the dataset. Return.
-        if (pos < 0) return Record();
+        if (pos < 0) {
+            cout << "Error. Record not found.\n";
+            return Record();
+        }
         else { // If not found and pos >= 0, read record at pos
             inFile.seekg(pos*sizeof(Record));
             inFile.read((char*)&record, sizeof(Record));
@@ -206,7 +219,10 @@ Record sequentialFile<T, Record>::search(T key) {
             while (record.next >= validRecords && record.next != -1) {
                 inFile.seekg(record.next*sizeof(Record));
                 inFile.read((char*)&record, sizeof(Record));
-                if (record.key == key) return record;
+                if (record.key == key) { 
+                    cout << "Record with key " << key << " found.\n";
+                    return record;
+                }
             }
         }
         cout << "Error. Record not found.\n";
@@ -215,7 +231,7 @@ Record sequentialFile<T, Record>::search(T key) {
         inFile.seekg(pos*sizeof(Record));
         inFile.read((char*)&record, sizeof(Record));
     }
-
+    cout << "Record with key " << key << " found.\n";
     return record;
 }
 
