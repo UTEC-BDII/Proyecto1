@@ -105,16 +105,88 @@ void sequentialFile<T, Record>::add(Record record) {
     fs.write((char*) &prevRecord, sizeof(Record));
 
     auxRecords++;
+    cout << "Added record.\n";
 }
 
-// Remove record from file (logically, not phisycally)
+// Remove record from file (logically, not physically)
 template <typename T, typename Record>
 void sequentialFile<T, Record>::remove(T key) {
-    ifstream inFile;
-    inFile.open(datfile, ios::binary);
+    fstream fs;
+    fs.open(datfile, ios::in | ios::out | ios::binary);
+    Record record;
+    Record prevRecord;
+    long prevPos;
+    // Find record's position
+    long pos;
+    bool found = binarySearch(key, this, pos);
+    if (!found) {
+        // The record with the lowest key is always a valid record, so if pos < 0 the searched
+        // record is not on the dataset. Return.
+        if (pos < 0) return;
+        else { // If not found and pos >= 0, read record at pos
+            prevPos = pos;
+            fs.seekg(prevPos*sizeof(Record));
+            fs.read((char*)&prevRecord, sizeof(Record));
+            if (prevRecord.next == -1) { // If read record is the last one, return
+                cout << "Error. Record with key " << key << " not found.\n";
+                return;
+            }
+            pos = prevRecord.next;
+            fs.seekg(pos*sizeof(Record));
+            fs.read((char*)&record, sizeof(Record));
+
+            // While next record belongs to the auxiliary part, keep searching for key
+            while (pos >= validRecords && pos != -1) {
+                // If record is found on auxiliary part, remove
+                if (record.key == key) {
+                    prevRecord.next = record.next;
+                    record.next = -2;
+                    fs.seekp(prevPos*sizeof(Record));
+                    fs.write((char*) &prevRecord, sizeof(Record));
+                    fs.seekp(pos*sizeof(Record));
+                    fs.write((char*) &record, sizeof(Record));
+                    return;
+                }
+                prevPos = pos;
+                prevRecord = record;
+                fs.seekg(prevRecord.next*sizeof(Record));
+                fs.read((char*)&record, sizeof(Record));
+                pos = prevRecord.next;
+            }
+            // If record wasn't found on auxiliary part, return
+            cout << "Error. Record with key " << key << " not found.\n";
+            return;
+        }
+    } else {
+        prevPos = pos - 1;
+        // Read record on the position physically before the record to remove
+        fs.seekg(prevPos*sizeof(Record));
+        fs.read((char*)&prevRecord, sizeof(Record));
+        // Read next record to the previously read
+        fs.seekg(prevRecord.next*sizeof(Record));
+        fs.read((char*)&record, sizeof(Record));
+        // In case the previous record is in the auxiliary part, iterate through the positions
+        // of next while keeping the last read record
+        while (record.key != key) {
+            prevPos = prevRecord.next;
+            prevRecord = record;
+            fs.seekg(prevRecord.next*sizeof(Record));
+            fs.read((char*)&record, sizeof(Record));
+        }
+        // Removed record points to -2 while the previous record points to its next
+        prevRecord.next = record.next;
+        record.next = -2;
+        // Write changes to the file
+        fs.seekp(prevPos*sizeof(Record));
+        fs.write((char*) &prevRecord, sizeof(Record));
+        fs.seekp(pos*sizeof(Record));
+        fs.write((char*) &record, sizeof(Record));
+    }
+
+    cout << "Removed record with key " << key << ".\n";
 }
 
-// Search for record on fiel by its key value
+// Search for record on file by its key value
 template <typename T, typename Record>
 Record sequentialFile<T, Record>::search(T key) {
     Record record;
@@ -124,9 +196,10 @@ Record sequentialFile<T, Record>::search(T key) {
     long pos;
     bool found = binarySearch(key, this, pos);
     if (!found) {
-        if (pos < 0) {
-            return Record();
-        } else { // If not found, read record
+        // The record with the lowest key is always a valid record, so if pos < 0 the searched
+        // record is not on the dataset. Return.
+        if (pos < 0) return Record();
+        else { // If not found and pos >= 0, read record at pos
             inFile.seekg(pos*sizeof(Record));
             inFile.read((char*)&record, sizeof(Record));
             // While next record belongs to the auxiliary part, keep searching for key
@@ -169,8 +242,9 @@ vector<Record> sequentialFile<T, Record>::rangeSearch(T beginkey, T endkey) {
             beginpos = 0;
             inFile.seekg(0);
         } else { // Else, start search from the next record to beginpos
-            beginpos++;
             inFile.seekg(beginpos*sizeof(Record));
+            inFile.read((char*)&record, sizeof(record));
+            inFile.seekg(record.next*sizeof(Record));
         }
     } else { // If found, start search from that record
         inFile.seekg(beginpos*sizeof(Record));
@@ -275,7 +349,7 @@ bool binarySearch(T key, sequentialFile<T, Record>* seqFile, long &pos) {
         mid = floor((left+right)/2);
         inFile.seekg(mid*sizeof(Record));
         inFile.read((char*)&record, sizeof(Record));
-        if (key < record.key) {
+        if (key < record.key || record.next == -2) {
             right = mid - 1;
         } else if (key > record.key){
             left = mid + 1;

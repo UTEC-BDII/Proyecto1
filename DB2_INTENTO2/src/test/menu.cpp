@@ -1,7 +1,7 @@
 #include "menu.h"
 
 using namespace std; 
-
+/*
 Menu::Menu(){}
 
 void Menu::esperar()
@@ -29,7 +29,7 @@ void Menu::showMenu()
   cout << endl;
   cout << "0. Salir" << endl;
 }
-/*
+
 void Menu::showTecnicasMenu()
 {
     cout << "ESCOGER TECNICA DE ORGANIZACIÓN" << endl;

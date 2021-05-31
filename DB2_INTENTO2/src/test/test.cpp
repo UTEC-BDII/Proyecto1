@@ -44,7 +44,7 @@ void testHash() {
 void testSequential() {
     sequentialFile<long, Basket> sf("basket_analysis.csv", 3);
 
-    cout << "Agregar un registro:\n";
+    cout << "\nAgregar un registro:\n";
     cout << "--------------\n";
     Basket basket1(1002, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     sf.add(basket1);
@@ -52,21 +52,27 @@ void testSequential() {
     sf.add(basket2);
     Basket basket3(1045, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     sf.add(basket3);
-    Basket basket4(1000, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-    sf.add(basket4);
+    //Basket basket4(1000, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    //sf.add(basket4);
 
-    cout << "Busqueda puntual:\n";
+    long key, start, end;
+
+    cout << "\nBusqueda puntual:\n";
     cout << "--------------\n";
-    long key = 1045;
+    key = 998;
     auto r = sf.search(key);
     r.printData();
 
-    cout << "Busqueda en rango:\n";
+    cout << "\nEliminar un regsitro:\n";
     cout << "--------------\n";
-    long start = 996;
-    long end = 9999;
-    vector<Basket> v;
-    v = sf.rangeSearch(start, end);
+    key = 2000;
+    sf.remove(key);
+
+    cout << "\nBusqueda en rango:\n";
+    cout << "--------------\n";
+    start = 996;
+    end = 9999;
+    auto v = sf.rangeSearch(start, end);
     for (auto x : v) {
         x.printData();
     }

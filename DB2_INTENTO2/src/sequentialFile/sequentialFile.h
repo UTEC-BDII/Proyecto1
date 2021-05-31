@@ -35,7 +35,7 @@ public:
     void createBinaryFile();
     size_t countRecords();
     void add(Record record);
-    void remove(T key); //TODO
+    void remove(T key);
     Record search(T key);
     vector<Record> rangeSearch(T beginkey, T endkey);
     void reconstruct();
