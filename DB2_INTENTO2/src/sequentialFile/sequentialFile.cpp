@@ -209,7 +209,7 @@ Record sequentialFile<T, Record>::search(T key) {
         // The record with the lowest key is always a valid record, so if pos < 0 the searched
         // record is not on the dataset. Return.
         if (pos < 0) {
-            cout << "Error. Record not found.\n";
+            cout << "Error. Record with key " << key << " not found.\n";
             return Record();
         }
         else { // If not found and pos >= 0, read record at pos
@@ -225,7 +225,7 @@ Record sequentialFile<T, Record>::search(T key) {
                 }
             }
         }
-        cout << "Error. Record not found.\n";
+        cout << "Error. Record with key " << key << " not found.\n";
         return Record();
     } else { // If found, return record at position
         inFile.seekg(pos*sizeof(Record));
