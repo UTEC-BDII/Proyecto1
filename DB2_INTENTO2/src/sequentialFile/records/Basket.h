@@ -1,6 +1,6 @@
 #include "Record.h"
 
-class Basket : public RecordSeq {
+class BasketSeq : public RecordSeq {
 public:
     long key;    //id
     bool Apple;
@@ -20,9 +20,9 @@ public:
     bool Yogurt;
     bool chocolate;
 public:
-    Basket(){}
+    BasketSeq(){}
     
-    Basket(long key, bool Apple, bool Bread, 
+    BasketSeq(long key, bool Apple, bool Bread, 
             bool Butter, bool Cheese, bool Corn, 
             bool Dill, bool Eggs, bool Ice_cream, 
             bool Kidney_Beans, bool Milk, bool Nutmeg, 
@@ -45,6 +45,26 @@ public:
         this->Unicorn = Unicorn;
         this->Yogurt = Yogurt;
         this->chocolate = chocolate;
+    }
+
+    BasketSeq(long key) {
+        this->key = key;
+        this->Apple = 1;
+        this->Bread = 1;
+        this->Butter = 1;
+        this->Cheese = 1;
+        this->Corn = 1;
+        this->Dill = 1;
+        this->Eggs = 1;
+        this->Ice_cream = 1;
+        this->Kidney_Beans = 1;
+        this->Milk = 1;
+        this->Nutmeg = 1;
+        this->Onion = 1;
+        this->Sugar = 1;
+        this->Unicorn = 1;
+        this->Yogurt = 1;
+        this->chocolate = 1;
     }
 
     void serialization(string object) override {
@@ -113,7 +133,6 @@ public:
         }
         // case 16:
         // after "for" ends
-        // cout << att << ", ";
         chocolate = att == "True";
     }
 
@@ -136,6 +155,6 @@ public:
         cout << "Yogurt: " << Yogurt << endl;
         cout << "chocolate: " << chocolate << endl; */
         cout << "Next record (logic position): " << next << endl;
-        cout << "--------------" << endl;
+        cout << "--------------\n";
     }
 };

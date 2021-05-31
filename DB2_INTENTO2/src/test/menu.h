@@ -2,11 +2,11 @@
 #include "../sequentialFile/sequentialFile.h"
 using namespace std; 
  
-/*
 class Menu
 {
   public:
     Menu();
+    void limpiar();
     void esperar();
     virtual ~Menu();
     void showMenu();
@@ -15,6 +15,5 @@ class Menu
     void Insercion(int dat_, int tec_);
     void Eliminacion(int dat_, int tec_);
     void BusquedaPuntual(int dat_, int tec_);
-    void BusquedaRango(int dat_);
+    void BusquedaRango(int dat_, int tec_);
 };
-*/

@@ -2,7 +2,7 @@
 #include "test/menu.h"
 
 int main() {
-/*
+
     Menu M;
     M.showMenu();
     int op;
@@ -36,15 +36,14 @@ int main() {
             M.BusquedaPuntual(dat, tec);
             break;
         case 8:
-            M.BusquedaRango(dat);
+            M.BusquedaRango(dat, tec);
             break;
         }
     }
     while (op != 0);
-*/
+    
     // testHash();
-
-    testSequential();
+    //testSequential();
 
     return 0;
 }

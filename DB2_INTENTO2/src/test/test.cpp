@@ -42,17 +42,17 @@ void testHash() {
 }
 
 void testSequential() {
-    sequentialFile<long, Basket> sf("basket_analysis.csv", 3);
+    sequentialFile<long, BasketSeq> sf("basket_analysis.csv", 3);
 
     cout << "\nAgregar un registro:\n";
     cout << "--------------\n";
-    Basket basket1(1002, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    BasketSeq basket1(1002);
     sf.add(basket1);
-    Basket basket2(997, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    BasketSeq basket2(997);
     sf.add(basket2);
-    Basket basket3(1045, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    BasketSeq basket3(1045);
     sf.add(basket3);
-    //Basket basket4(1000, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    //BasketSeq basket4(1000);
     //sf.add(basket4);
 
     long key, start, end;
@@ -75,5 +75,79 @@ void testSequential() {
     auto v = sf.rangeSearch(start, end);
     for (auto x : v) {
         x.printData();
+    }
+}
+
+void testTimeSeq() {
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(-100, 1500);
+
+    ofstream outFile("results_seq.csv");
+    sequentialFile<long, BasketSeq> sf("basket_analysis.csv", 10);
+    long key;
+
+    cout << "Add test.\n";
+    outFile << "add,";
+    for (size_t i = 0; i < 5; i++) {
+        key = distr(gen);
+        BasketSeq basket(key);
+        auto t1 = high_resolution_clock::now();
+        sf.add(basket);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count() << ",";
+    }
+
+    cout << "Search test.\n";
+    outFile << "\nsearch,";
+    for (size_t i = 0; i < 5; i++) {
+        key = distr(gen);
+        auto t1 = high_resolution_clock::now();
+        sf.search(key);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count() << ",";
+    }
+}
+
+void testTimeHash() {
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(-100, 1500);
+
+    ofstream outFile("results_hash.csv");
+    staticHash<BasketSeq> hash("basket_analysis.csv");
+    //long key;
+
+    cout << "Add test.\n";
+    outFile << "add,";
+    for (size_t i = 0; i < 5; i++) {
+        //key = distr(gen);
+        //BasketSeq basket(key);
+        auto t1 = high_resolution_clock::now();
+        //hash.add(basket);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count() << ",";
+    }
+
+    cout << "Search test.\n";
+    outFile << "\nsearch,";
+    for (size_t i = 0; i < 5; i++) {
+        //key = distr(gen);
+        auto t1 = high_resolution_clock::now();
+        //hash.search(key);
+        auto t2 = high_resolution_clock::now();
+        duration<double, std::milli> ms_double = t2 - t1;
+        outFile << ms_double.count() << ",";
     }
 }

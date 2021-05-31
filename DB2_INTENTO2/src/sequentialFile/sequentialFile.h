@@ -9,7 +9,7 @@
 /* Sequential File class. Manages two files, a main data file and a binary file 
  where operations are executed. New records aren't managed through and auxiliary 
  file, instead they are all inserted to the end of the same file where valid records
- are stored. To do this while retaining the properties of a Sequential File, we
+ are stored. To do this while retaininfg the properties of a Sequential File, we
  hold the number of valid and auxiliary records to perform operations such as binary
  search only on the valid records. Moreover, valid records are physically ordered
  while auxiliary records are not necessarily.

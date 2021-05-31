@@ -12,10 +12,8 @@
 
 class RecordHash {
 protected:
-
-    virtual void read() = 0;
-    virtual void write() = 0;
     virtual void serialization(string object) = 0;
+    virtual void printData() = 0;
 };
 
 class BasketHash : public RecordHash {
@@ -39,12 +37,51 @@ public:
     bool chocolate;
 
 public:
-    void read() override{
+    BasketHash(){}
 
+    BasketHash(long key, bool Apple, bool Bread, 
+            bool Butter, bool Cheese, bool Corn, 
+            bool Dill, bool Eggs, bool Ice_cream, 
+            bool Kidney_Beans, bool Milk, bool Nutmeg, 
+            bool Onion, bool Sugar, bool Unicorn, 
+            bool Yogurt, bool chocolate) {
+        this->key = key;
+        this->Apple = Apple;
+        this->Bread = Bread;
+        this->Butter = Butter;
+        this->Cheese = Cheese;
+        this->Corn = Corn;
+        this->Dill = Dill;
+        this->Eggs = Eggs;
+        this->Ice_cream = Ice_cream;
+        this->Kidney_Beans = Kidney_Beans;
+        this->Milk = Milk;
+        this->Nutmeg = Nutmeg;
+        this->Onion = Onion;
+        this->Sugar = Sugar;
+        this->Unicorn = Unicorn;
+        this->Yogurt = Yogurt;
+        this->chocolate = chocolate;
     }
 
-    void write() override{
-
+    BasketHash(long key) {
+        this->key = key;
+        this->Apple = 1;
+        this->Bread = 1;
+        this->Butter = 1;
+        this->Cheese = 1;
+        this->Corn = 1;
+        this->Dill = 1;
+        this->Eggs = 1;
+        this->Ice_cream = 1;
+        this->Kidney_Beans = 1;
+        this->Milk = 1;
+        this->Nutmeg = 1;
+        this->Onion = 1;
+        this->Sugar = 1;
+        this->Unicorn = 1;
+        this->Yogurt = 1;
+        this->chocolate = 1;
     }
 
     void serialization(string object) override {
@@ -115,17 +152,92 @@ public:
         chocolate = att == "True";
     }
 
-    void print() {
-        cout << key << "," << Apple << "," << Bread << "," << Butter << "," << Cheese << "," << Corn << "," << Dill << "," << Eggs << "," << Ice_cream << "," << Kidney_Beans << "," <<  Milk << "," << Nutmeg << "," << Onion << "," << Sugar << "," << Unicorn << "," << Yogurt << "," << chocolate;
+    void printData(){
+        cout << "ID: " << key << endl;
+        cout << "Apple: " << Apple << endl;
+        cout << "Bread: " << Bread << endl;
+        cout << "--------------\n";
     }
 };
 
+class WorldPopulationHash : public RecordHash {
+public:
+    long key;   //year
+    long Population;
+    float ChangePerc;
+    long NetChange;
+    int Density;
+    long Urban;
+    int UrbanPerc;
+public:
+    WorldPopulationHash(){}
+
+    WorldPopulationHash(long key, long Population, float ChangePerc, 
+                    long NetChange, int Density, long Urban, int UrbanPerc) {
+        this->key = key;
+        this->Population = Population;
+        this->ChangePerc = ChangePerc;
+        this->NetChange = NetChange;
+        this->Density = Density;
+        this->Urban = Urban;
+        this->UrbanPerc = UrbanPerc;
+    }
+
+    void serialization(string object) override {
+        int i=0;
+        string att;
+        for (char letter : object) {
+            if (letter != ',') {
+                att.push_back(letter);
+            } else {
+                switch (i) {
+                    case 0:
+                        key = stol(att);
+                        break;
+                    case 1:
+                        Population = stol(att);
+                        break;
+                    case 2:
+                        ChangePerc = stof(att);
+                        break;
+                    case 3:
+                        NetChange = stol(att);
+                        break;
+                    case 4:
+                        Density = stoi(att);
+                        break;
+                    case 5:
+                        Urban = stol(att);
+                        break;
+                    default:
+                        cerr << "Error in serializing\n";
+                        break;
+                }
+                i++;
+                att.clear();
+            }
+        }
+        // case 16:
+        // after "for" ends
+        UrbanPerc = stoi(att);
+    }
+
+    void printData(){
+        cout << "Year: " << key << endl;
+        cout << "Population: " << Population << endl;
+        cout << "ChangePerc: " << ChangePerc << endl;
+        cout << "NetChange: " << NetChange << endl;
+        cout << "Density: " << Density << endl;
+        cout << "Urban: " << Urban << endl;
+        cout << "UrbanPerc: " << UrbanPerc << endl;
+        cout << "--------------\n";
+    }
+};
 
 struct indexElement{
     long index;     // en el datafile no en el index
     long key;
     indexElement(){}
-    //indexElement(long _index_, long _key_) : index(_index_), key(_key_){}
 };
 
 struct indexBucket{
@@ -168,7 +280,6 @@ private:
     string datafilename;
     long recordCount;
     long indexCount;
-    // Bucket* buckets[MAX_SIZE_HASH];      // Array de punteros a buckets
 
 public:
     staticHash(string name) : filename(name), recordCount(0), indexCount(0) {
@@ -191,8 +302,6 @@ public:
         }
 
         indexBucket bucket{};
-        // cout << bucket.next << "::::::::::::::" << endl;
-        // cout << sizeof(indexBucket) << "::::::::::::::" << endl;
         for (int i=0; i<MAX_SIZE_HASH; i++)
             indexoutfile.write((char*)&bucket, sizeof(indexBucket));
 
@@ -214,11 +323,9 @@ public:
             indexinfile.seekg(hashKey*sizeof(indexBucket));
             indexinfile.read((char*)&nbucket, sizeof(indexBucket));
             if ( nbucket.size < MAX_SIZE_BUCKET ) {
-                //cout << "HASHKEY: " << hashKey << " - " << "OLD SIZE: " << nbucket.size << " - ";
                 nbucket.add(address, r.key);
                 indexoutfile.seekp(hashKey*sizeof(indexBucket));
                 indexoutfile.write((char*)&nbucket, sizeof(indexBucket));
-                //cout << "ADDRESS: " << address << " - " << "KEY: " << r.key << " - " << "NEW SIZE: " << nbucket.size << endl;
             } else {
                 cout << "YA NO POR FAVOR";
                 indexBucket newBucket;
@@ -233,6 +340,7 @@ public:
                 indexoutfile.seekp((indexCount-1)*sizeof(indexBucket));
                 indexoutfile.write((char*)&nbucket, sizeof(indexBucket));
             }
+            // printHash();
         }
         indexoutfile.close();
         indexinfile.close();
@@ -243,14 +351,14 @@ public:
         cout << endl << "recordCount: " << recordCount << endl;
     }
 
-    int hashFunction(const long& id) {
+    long hashFunction(const long& id) {
         return id % MAX_SIZE_HASH;
     }
 
     void addToHash(Record record) {
         long address = recordCount*sizeof(record);
 
-        fstream outfile;
+        ofstream outfile;
         outfile.open(datafilename, ios::app | ios::binary);
         outfile.write((char*)&record, sizeof(Record));
         outfile.close();
@@ -264,13 +372,17 @@ public:
         infile.close();
 
         if ( bucket.size < MAX_SIZE_BUCKET ) {
+            fstream indexoutfile;
+            indexoutfile.open(indexfilename, ios::in | ios::out | ios::binary);
+            if (!indexoutfile) {
+                cerr << "ERROR P";
+                exit(1);
+            }
             bucket.add(address, record.key);
-            //cout << endl << "[" << bucket.size << "]" << endl;
+            indexoutfile.seekp(hashKey*sizeof(indexBucket));
+            indexoutfile.write((char*)&bucket, sizeof(indexBucket));
+            indexoutfile.close();
 
-            outfile.open(indexfilename, ios::out | ios::binary);
-            outfile.seekp(hashKey*sizeof(indexBucket));
-            outfile.write((char*) &bucket, sizeof(indexBucket));
-            outfile.close();
         } else {
             // Create a new bucket using LIFO
             indexBucket newBucket;
@@ -280,14 +392,15 @@ public:
             newBucket.next = (indexCount++)*sizeof(indexBucket);
 
             // write the new bucket in old bucket's position
-            outfile.open(indexfilename);
-            outfile.seekp(hashKey*sizeof(indexBucket));
-            outfile.write((char*)&newBucket, sizeof(indexBucket));
+            ofstream indexoutfile;
+            indexoutfile.open(indexfilename, ios::binary);
+            indexoutfile.seekp(hashKey*sizeof(indexBucket));
+            indexoutfile.write((char*)&newBucket, sizeof(indexBucket));
 
             // Save the old bucket to add it into the end of the file
-            outfile.seekp((indexCount-1)*sizeof(indexBucket));
-            outfile.write((char*)&bucket, sizeof(indexBucket));
-            outfile.close();
+            indexoutfile.seekp((indexCount-1)*sizeof(indexBucket));
+            indexoutfile.write((char*)&bucket, sizeof(indexBucket));
+            indexoutfile.close();
         }
 
     }
@@ -322,10 +435,6 @@ public:
     }
 
     bool remove(long key, Record& record) {
-        // Podría crear un array que tenga posiciones eliminadas y
-        // que al momento de insertar vea si este array tiene un
-        // elemento para tomar esa posicion e insertar en el datafile
-        // en esa posicion
         long hashKey = hashFunction(key);
         indexBucket bucket;
 
@@ -334,89 +443,49 @@ public:
         indexfile.seekg(hashKey*sizeof(indexBucket));
         indexfile.read((char*)&bucket, sizeof(indexBucket));
         indexfile.close();
-
-        cout << "BUCKET:" << bucket.size << "-" << bucket.next << "-" << bucket.indexes[bucket.size-1]->key << endl;
-
+        
         /// Stratagy: swap the last element from de first bucket
         /// with the element to remove and do a size-- in this bucket
         /// case1: the element to remove is in the first bucket
         /// case2: the element to remove is in the first bucket & is the last element
         /// case3: the element to remove is not in the first bucket
 
+        fstream outfile;
+        outfile.open(indexfilename, ios::in | ios::out | ios::binary);
         if (bucket.remove(key)) {
-            fstream outfile;
-            outfile.open(indexfilename, ios::out | ios::binary);
             outfile.seekp(hashKey*sizeof(indexBucket), ios::beg);
             outfile.write((char*)&bucket, sizeof(indexBucket));
             outfile.close();
         } else {
-            // cogemos el next bucket
-
-        }
-
-        indexfile.close();
-        /*
-        ofstream outfile;
-        // cout << "KEY: " << swap->key << "INDEX: " << swap->index << bucket.indexes[bucket.size-1]->index << " {:} " << "REAL KEY: " << key << endl;
-        if (swap->key == key) {
-            /// case2
-            bucket.size = bucket.size-1;
-            cout << "BUCKET:" << bucket.size << "-" << bucket.next << "-" << bucket.indexes[bucket.size-1]->key << endl;
-            outfile.open(indexfilename, ios::binary);
-            outfile.seekp(hashKey*sizeof(indexBucket));
-            outfile.write((char*)&bucket, sizeof(indexBucket));
-            outfile.close();
-
-            // borrar
-            indexBucket b;
-            ifstream in;
-            in.open(indexfilename, ios::in | ios::binary);
-            in.seekg(bucket.next);
-            in.read((char*)&b, sizeof(indexBucket));
-            cout << "UPDATED BUCKET:" << b.size << "-" << b.next << "-" << b.indexes[b.size-1]->key << endl;
-            return true;
-        } else {
-            cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-            /// case1
-            for (int i=0; i<bucket.size-1; i++) {
-                if (bucket.indexes[i]->key == key) {
-                    bucket.indexes[i] = swap;
-                    bucket.size--;
-
-                    outfile.open(indexfilename, ios::binary);
-                    outfile.seekp(hashKey*sizeof(indexBucket));
-                    outfile.write((char*)&bucket, sizeof(indexBucket));
-                    outfile.close();
-                    return true;
-                }
-            }
-            /// case2
-            indexfile.open(indexfilename);
-            indexBucket otherBucket;
             long n = bucket.next;
+            indexBucket otherBucket;
+            indexElement* swap = bucket.indexes[bucket.size-1];
+            indexfile.open(indexfilename, ios::in | ios::binary);
             do {
                 indexfile.seekg(n);
                 indexfile.read((char*)&otherBucket, sizeof(indexBucket));
                 for (int i=0; i<otherBucket.size; i++) {
+                    cout << otherBucket.indexes[i]->key << " - ";
                     if (otherBucket.indexes[i]->key == key) {
                         otherBucket.indexes[i] = swap;
                         bucket.size--;
 
-                        outfile.open(indexfilename, ios::binary);
                         outfile.seekp(hashKey*sizeof(indexBucket));
                         outfile.write((char*)&bucket, sizeof(indexBucket));
                         outfile.seekp(n);
                         outfile.write((char*)&otherBucket, sizeof(indexBucket));
+                        indexfile.close();
                         outfile.close();
                         return true;
                     }
                 }
                 n = otherBucket.next;
             } while (n != -1);
+
         }
 
         indexfile.close();
-        */
+        outfile.close();
         return false;
     }
 
@@ -475,6 +544,7 @@ public:
         infile.open(datafilename, ios::in | ios::binary);
         Record record;
         long i=0;
+
         while (i < recordCount) {
             infile.seekg((i++)*sizeof(Record));
             infile.read((char*)&record, sizeof(Record));
@@ -484,19 +554,27 @@ public:
     }
 
     void printIndexFile() {
-        cout << "INDEXCOUNT: " << indexCount << endl;
+        cout << "\nINDEXCOUNT: " << indexCount << endl;
         ifstream infile;
         infile.open(indexfilename, ios::in | ios::binary);
         indexBucket bucket;
         long i=0;
-        while (i < indexCount) {
+
+        ifstream inFile;
+        inFile.open(indexfilename, ios::binary);
+        inFile.seekg(0, inFile.end);
+        size_t size = inFile.tellg();
+        inFile.close();
+        long s = size/sizeof(indexBucket);
+
+        while (i < s) {
             infile.seekg((i++)*sizeof(indexBucket));
             infile.read((char*)&bucket, sizeof(indexBucket));
             cout << bucket.size << "{:}" << "ADDRESS: " << i*sizeof(indexBucket) << endl;
             for (int j=0; j<bucket.size; j++) {
                 cout << bucket.indexes[j]->key << "-";
             }
-            cout << endl;
+            cout << endl << endl;
         }
         infile.close();
     }

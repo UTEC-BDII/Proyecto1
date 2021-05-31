@@ -14,7 +14,7 @@ protected:
     virtual void write() = 0;
 };
 
-class Basket : public Record {
+class BasketSeq : public Record {
 private:
     int key;    //id
     bool Apple;
@@ -43,7 +43,7 @@ public:
     }
 };
 
-class WorldPopulation : public Record {
+class WorldPopulationSeq : public Record {
 private: 
     int key;   //year
     long Population;
@@ -69,7 +69,7 @@ public:
         
     }
     
-    WorldPopulation()
+    WorldPopulationSeq()
     {
         //auto infile = ;
     }
