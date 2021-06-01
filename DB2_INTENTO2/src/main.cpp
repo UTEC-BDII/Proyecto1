@@ -24,10 +24,5 @@ int main() {
         }
     }
 
-    staticHash<BasketHash> HashBasket("basket_analysis.csv");
-    sequentialFile<long, BasketSeq> SeqBasket("basket_analysis.csv", 3);
-    staticHash<WorldPopulationHash> HashWorld("WorldPopulation.csv");
-    sequentialFile<long, WorldPopulationSeq> SeqWorld("WorldPopulation.csv", 3);
-
     return 0;
 }
