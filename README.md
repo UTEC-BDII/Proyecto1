@@ -4,5 +4,5 @@
 * Luis Carbajal
 * José Sanchez
 
-## Documentación
+## Informe
 Leer la sección de Wiki.
