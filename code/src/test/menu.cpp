@@ -122,7 +122,7 @@ void testHash(string filename) {
       }
     }
 
-    cout << "Enter any character to continue or 0 to exit...\n";
+    cout << "Enter 0 to exit or any other number to continue...\n";
     cin >> n;
   } while (n != 0);
 }
@@ -192,7 +192,7 @@ void testSequential(string filename) {
         break;
     }
 
-    cout << "Enter any character to continue or 0 to exit...\n";
+    cout << "Enter 0 to exit or any other number to continue...\n";
     cin >> n;
   } while (n != 0);
 }
