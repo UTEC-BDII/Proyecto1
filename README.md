@@ -4,6 +4,8 @@
 * Luis Carbajal
 * José Sanchez
 
+Este proyecto fue trabajado colaborativamente usando la herramienta de Live Share en Visual Studio Code.
+
 ## Ejecución
 Clonar el repositorio localmente:
 ```
