@@ -41,9 +41,9 @@ staticHash<Record>::staticHash(string name) : filename(name), recordCount(0), in
     indexfilename = "index.dat";
 
     infile.open(filename.c_str());
-    indexinfile.open(indexfilename, ios::in | ios::binary);
     outfile.open(datafilename, ios::out | ios::binary);
     indexoutfile.open(indexfilename, ios::binary);
+    indexinfile.open(indexfilename, ios::in | ios::binary);
 
     if(!infile || !outfile || !indexoutfile || !indexinfile) {
         cerr << "ERROR" << endl;
